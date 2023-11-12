@@ -65,6 +65,9 @@ dependencies {
     //Hilt
     kapt(libs.hilt.android.complier)
     implementation(libs.hilt.android)
+    //implementation(libs.androidx.hilt.lifecycle.viewmodel)
+    kapt(libs.androidx.hilt.compiler)
+    implementation(libs.androidx.hilt.navigation.compose)
 
     //Retrofit
     implementation(libs.retrofit)
