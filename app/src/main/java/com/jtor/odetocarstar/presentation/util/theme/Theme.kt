@@ -1,4 +1,4 @@
-package com.jtor.odetocarstar.ui.theme
+package com.jtor.odetocarstar.presentation.util.theme
 
 import android.app.Activity
 import android.os.Build

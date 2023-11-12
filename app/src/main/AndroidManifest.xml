@@ -13,9 +13,8 @@
         android:theme="@style/Theme.OdeToCarStar"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".presentation.main.MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:theme="@style/Theme.OdeToCarStar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

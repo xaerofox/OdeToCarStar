@@ -2,6 +2,9 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.android.kotlin)
+
+    kotlin("kapt")
+    alias(libs.plugins.dagger.hilt)
 }
 
 android {
@@ -54,6 +57,15 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(libs.bundles.compose)
     implementation(platform(libs.compose.bom))
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+
+    //Hilt
+    kapt(libs.hilt.android.complier)
+    implementation(libs.hilt.android)
+
+    //Retrofit
+    implementation(libs.retrofit)
+    implementation(libs.okhttp3)
 
     testImplementation(libs.junit)
 
