@@ -25,7 +25,6 @@ android {
 
         buildConfigField("String", "BASE_URL", "\"https://car-api2.p.rapidapi.com\"")
         buildConfigField("String", "RAPID_HOST", "\"car-api2.p.rapidapi.com\"")
-        buildConfigField("String", "RAPID_API_KEY", "\"6d9a7c6adamsh31b20c14c3e6b64p15490ejsn038b44d330c4\"")
     }
 
     buildTypes {

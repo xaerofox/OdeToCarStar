@@ -50,7 +50,7 @@ class SimpleAuthInterceptor: Interceptor {
         val originalRequest = chain.request()
 
         val updatedRequest = originalRequest.newBuilder()
-            .header("X-RapidAPI-Key", BuildConfig.RAPID_API_KEY)
+            //.header("X-RapidAPI-Key", BuildConfig.RAPID_API_KEY)
             .header("X-RapidAPI-Host", BuildConfig.RAPID_HOST)
             .build()
 
