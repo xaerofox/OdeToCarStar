@@ -1,4 +1,4 @@
-package com.jtor.odetocarstar.data.models
+package com.jtor.odetocarstar.domain.model
 
 data class Collection(
     val count: Int,

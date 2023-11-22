@@ -1,7 +1,7 @@
 package com.jtor.odetocarstar.core.di
 
 import com.jtor.odetocarstar.BuildConfig
-import com.jtor.odetocarstar.data.remote.CarApi
+import com.jtor.odetocarstar.domain.repository.CarApi
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
