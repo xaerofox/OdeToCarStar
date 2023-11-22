@@ -1,4 +1,7 @@
 @file:Suppress("DSL_SCOPE_VIOLATION")
+
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.android.kotlin)
@@ -25,6 +28,7 @@ android {
 
         buildConfigField("String", "BASE_URL", "\"https://car-api2.p.rapidapi.com\"")
         buildConfigField("String", "RAPID_HOST", "\"car-api2.p.rapidapi.com\"")
+        buildConfigField("String", "RAPID_API_KEY", "\"${gradleLocalProperties(rootDir).getProperty("API_KEY")}\"")
     }
 
     buildTypes {
