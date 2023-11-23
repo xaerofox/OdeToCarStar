@@ -10,6 +10,6 @@ interface CarApi {
     @GET("/api/makes")
     suspend fun getMakes(
         @Query("year") year: Int = 2015,
-        @Query("sort") sort: String = "name"
+        @Query("sort") sort: String? = "name"
     ) : CollectionDto<CarMake>
 }
