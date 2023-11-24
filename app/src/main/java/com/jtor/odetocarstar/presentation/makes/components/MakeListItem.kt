@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.jtor.odetocarstar.domain.model.CarMake
+import com.jtor.odetocarstar.presentation.util.theme.OdeToCarStarTheme
 
 @Composable
 fun MakeListItem(
@@ -25,8 +26,10 @@ fun MakeListItem(
             .padding(20.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Text(text = "${make.id}. ${make.name}",
-            style = MaterialTheme.typography.headlineLarge)
+        Text(
+            text = "${make.id}. ${make.name}",
+            style = MaterialTheme.typography.headlineLarge
+        )
 
     }
 }
@@ -34,5 +37,7 @@ fun MakeListItem(
 @Preview(showBackground = true)
 @Composable
 fun MakeListItemPreview() {
-    MakeListItem(make = CarMake(0, "Ford"), onItemClick = {})
+    OdeToCarStarTheme {
+        MakeListItem(make = CarMake(0, "Ford"), onItemClick = {})
+    }
 }
