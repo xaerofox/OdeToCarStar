@@ -16,6 +16,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.jtor.odetocarstar.presentation.Screen
 import com.jtor.odetocarstar.presentation.makes.components.MakeListItem
 
 @Composable
@@ -28,8 +29,7 @@ fun CarMakeScreen(
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             items(state.makes) { make ->
                 MakeListItem(make = make, onItemClick = {
-                    //TODO Implement year screen
-                    //navController.navigate()
+                    navController.navigate(Screen.CarYearScreen.withArgs(make.name))
                 })
 
             }
