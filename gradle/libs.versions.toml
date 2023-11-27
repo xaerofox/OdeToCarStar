@@ -14,7 +14,7 @@ moshi-kotlin = "1.9.3"
 retro = "2.9.0"
 okhttp = "4.11.0"
 
-android-gradle = "8.1.1"
+android-gradle = "8.1.4"
 kotlin = "1.8.10"
 hilt = "2.48"
 
