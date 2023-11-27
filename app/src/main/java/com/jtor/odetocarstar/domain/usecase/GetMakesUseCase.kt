@@ -14,7 +14,7 @@ class GetMakesUseCase @Inject constructor(
     operator fun invoke(): Flow<Resource<List<CarMake>>> = flow {
         try {
             emit(Resource.Loading())
-            val makes = repository.getMakes(2015, "name")
+            val makes = repository.getMakes(2015, "id")
             emit(Resource.Success(makes))
 
         } catch (e: IOException) {
