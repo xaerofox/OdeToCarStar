@@ -10,7 +10,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.jtor.odetocarstar.presentation.Screen
+import com.jtor.odetocarstar.presentation.util.route.Screen
 import com.jtor.odetocarstar.presentation.makes.CarMakeScreen
 import com.jtor.odetocarstar.presentation.util.theme.OdeToCarStarTheme
 import com.jtor.odetocarstar.presentation.year.CarYearScreen

@@ -1,4 +1,4 @@
-package com.jtor.odetocarstar.presentation
+package com.jtor.odetocarstar.presentation.util.route
 
 sealed class Screen(val route: String) {
     object CarMakeScreen: Screen("car_makes")
