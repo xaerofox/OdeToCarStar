@@ -14,3 +14,6 @@
 .cxx
 local.properties
 /.idea/inspectionProfiles/Project_Default.xml
+.idea/appInsightsSettings.xml
+.idea/deploymentTargetDropDown.xml
+.idea/migrations.xml

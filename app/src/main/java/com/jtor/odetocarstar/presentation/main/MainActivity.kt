@@ -10,8 +10,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.jtor.odetocarstar.presentation.util.route.Screen
 import com.jtor.odetocarstar.presentation.makes.CarMakeScreen
+import com.jtor.odetocarstar.presentation.util.route.Screen
 import com.jtor.odetocarstar.presentation.util.theme.OdeToCarStarTheme
 import com.jtor.odetocarstar.presentation.year.CarYearScreen
 import dagger.hilt.android.AndroidEntryPoint
@@ -40,7 +40,23 @@ class MainActivity : ComponentActivity() {
                                 }
                             )
                         ) { entry ->
-                            CarYearScreen(make = entry.arguments?.getString("makeId")!!)
+                            CarYearScreen(make = entry.arguments?.getString("makeId")!!,
+                                navController = navController)
+                        }
+
+                        composable(route = Screen.CarModelScreen.route + "/{makeId}/{year}",
+                            arguments = listOf(
+                                navArgument("makeId") {
+                                    type = NavType.StringType
+                                    defaultValue = ""
+                                },
+                                navArgument("year") {
+                                    type = NavType.StringType
+                                    defaultValue = "2020"
+                                }
+                            )
+                        ) {
+                            //TODO create car model screen
                         }
                     }
                 }

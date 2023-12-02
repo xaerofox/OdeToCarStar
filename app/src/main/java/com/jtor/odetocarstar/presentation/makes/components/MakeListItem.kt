@@ -34,7 +34,7 @@ fun MakeListItem(
         )
         Spacer(modifier = Modifier.width(8.dp))
         Text(
-            text = "${make.name}",
+            text = make.name,
             style = MaterialTheme.typography.headlineMedium
         )
 
