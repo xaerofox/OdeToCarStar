@@ -1,6 +1,7 @@
 package com.jtor.odetocarstar.data.repository
 
 import com.jtor.odetocarstar.domain.model.CarMake
+import com.jtor.odetocarstar.domain.model.CarModel
 import com.jtor.odetocarstar.domain.repository.CarApi
 import com.jtor.odetocarstar.domain.repository.CarRepository
 import javax.inject.Inject
@@ -17,4 +18,13 @@ class CarRepositoryImpl @Inject constructor(
             sort = sort
         ).data
     }
+
+    override suspend fun getModels(year: Int, make: String): List<CarModel> {
+        return api.getModels(
+            year = year,
+            make = make
+        ).data
+    }
+
+
 }
