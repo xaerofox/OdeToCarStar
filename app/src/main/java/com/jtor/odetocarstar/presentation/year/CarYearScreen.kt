@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.jtor.odetocarstar.presentation.util.route.Screen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -54,10 +55,6 @@ fun CarYearScreen(
                 .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            //        Text(
-            //            text = "Select a year for $make",
-            //            fontSize = 20.sp
-            //        )
             val years = listOf("2015", "2016", "2017", "2018", "2019", "2020")
             LazyVerticalGrid(
                 columns = GridCells.Fixed(2)
@@ -65,7 +62,7 @@ fun CarYearScreen(
                 items(years.size) {
                     OutlinedButton(
                         modifier = Modifier.padding(4.dp),
-                        onClick = { /*TODO*/ }
+                        onClick = { navController?.navigate(Screen.CarModelScreen.withArgs(make, years[it])) }
                     ) {
                         Text(text = years[it])
                     }

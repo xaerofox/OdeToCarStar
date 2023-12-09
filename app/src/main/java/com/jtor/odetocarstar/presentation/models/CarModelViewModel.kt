@@ -25,13 +25,13 @@ class CarModelViewModel @Inject constructor(
             when(result) {
                 is Resource.Error -> {
                     _state.value =
-                        _state.value.copy(error = result.message ?: "An unexpected error occurred")
+                        ModelListState(error = result.message ?: "An unexpected error occurred")
                 }
                 is Resource.Loading -> {
-                    _state.value = _state.value.copy(isLoading = true)
+                    _state.value = ModelListState(isLoading = true)
                 }
                 is Resource.Success -> {
-                    _state.value = _state.value.copy(models = result.data ?: emptyList())
+                    _state.value = ModelListState(models = result.data ?: emptyList())
                 }
             }
         }.launchIn(viewModelScope)

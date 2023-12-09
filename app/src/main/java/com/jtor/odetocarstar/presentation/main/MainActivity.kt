@@ -11,6 +11,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.jtor.odetocarstar.presentation.makes.CarMakeScreen
+import com.jtor.odetocarstar.presentation.models.CarModelScreen
 import com.jtor.odetocarstar.presentation.util.route.Screen
 import com.jtor.odetocarstar.presentation.util.theme.OdeToCarStarTheme
 import com.jtor.odetocarstar.presentation.year.CarYearScreen
@@ -44,9 +45,9 @@ class MainActivity : ComponentActivity() {
                                 navController = navController)
                         }
 
-                        composable(route = Screen.CarModelScreen.route + "/{makeId}/{year}",
+                        composable(route = Screen.CarModelScreen.route + "/{make}/{year}",
                             arguments = listOf(
-                                navArgument("makeId") {
+                                navArgument("make") {
                                     type = NavType.StringType
                                     defaultValue = ""
                                 },
@@ -56,7 +57,11 @@ class MainActivity : ComponentActivity() {
                                 }
                             )
                         ) {
-                            //TODO create car model screen
+                            CarModelScreen(
+                                navController = navController,
+                                make = it.arguments?.getString("make")!!,
+                                year = it.arguments?.getString("year")!!,
+                            )
                         }
                     }
                 }
