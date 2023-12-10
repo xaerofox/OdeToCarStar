@@ -1,5 +1,6 @@
 package com.jtor.odetocarstar.presentation.makes
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,10 +20,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.jtor.odetocarstar.presentation.util.route.Screen
 import com.jtor.odetocarstar.presentation.makes.components.MakeListItem
+import com.jtor.odetocarstar.presentation.util.route.Screen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -72,6 +74,19 @@ fun CarMakeScreen(
 
             if (state.isLoading) {
                 CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+            }
+
+            Box(
+                modifier = Modifier
+                    .align(alignment = Alignment.BottomEnd)
+                    .background(Color.Black)
+            ) {
+                Text(
+                    modifier = Modifier.padding(2.dp),
+                    text = "*Only vehicle information between 2015 - 2020",
+                    color = Color.Magenta,
+                    fontSize = 10.sp
+                )
             }
         }
     }
