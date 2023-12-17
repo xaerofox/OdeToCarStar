@@ -20,7 +20,7 @@ data class CarTrim(
     @Json(name = "make_model_trim_interior_colors")
     val trimInteriorColors: List<TrimInteriorColor>,
     @Json(name = "make_model_trim_mileage")
-    val trimMileage: MakeModelTrimMileage,
+    val trimMileage: TrimMilage,
     val modified: String,
     val msrp: Int,
     val name: String,
