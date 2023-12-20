@@ -34,17 +34,16 @@ fun MakeListItem(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { onItemClick(make) }
-            .padding(20.dp)
+            .padding(10.dp)
     ) {
         AsyncImage(
             model = findMakeLogo(make.name.lowercase()),
             contentDescription = null,
             modifier = Modifier
-                .width(100.dp)
-                .height(100.dp)
                 .clip(RoundedCornerShape(10.dp))
                 .aspectRatio(100f/100f, true)
-                .background(Color.White)
+                .background(customBackgroundSetup(make.name.lowercase()))
+                .padding(8.dp)
         )
 //
 //        Text(
@@ -57,6 +56,13 @@ fun MakeListItem(
 //            style = MaterialTheme.typography.headlineMedium
 //        )
 
+    }
+}
+
+fun customBackgroundSetup(make: String): Color {
+    return when(make) {
+        "bmw" -> Color.Black
+        else -> Color.White
     }
 }
 
