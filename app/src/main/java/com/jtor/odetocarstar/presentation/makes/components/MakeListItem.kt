@@ -38,24 +38,13 @@ fun MakeListItem(
     ) {
         AsyncImage(
             model = findMakeLogo(make.name.lowercase()),
-            contentDescription = null,
+            contentDescription = "${make.name} logo",
             modifier = Modifier
                 .clip(RoundedCornerShape(10.dp))
                 .aspectRatio(100f/100f, true)
                 .background(customBackgroundSetup(make.name.lowercase()))
                 .padding(8.dp)
         )
-//
-//        Text(
-//            text = "${make.id}.",
-//            style = MaterialTheme.typography.headlineMedium
-//        )
-//        Spacer(modifier = Modifier.width(8.dp))
-//        Text(
-//            text = make.name,
-//            style = MaterialTheme.typography.headlineMedium
-//        )
-
     }
 }
 
