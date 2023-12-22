@@ -7,13 +7,16 @@ import androidx.lifecycle.viewModelScope
 import com.jtor.odetocarstar.core.Resource
 import com.jtor.odetocarstar.domain.model.CarTrim
 import com.jtor.odetocarstar.domain.usecase.GetTrimsUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
+@HiltViewModel
 class CarTrimViewModel @Inject constructor(
     private val getTrimsUseCase: GetTrimsUseCase
 ) : ViewModel() {
+
     private val _state = mutableStateOf(TrimListState())
     val state: State<TrimListState> = _state
 

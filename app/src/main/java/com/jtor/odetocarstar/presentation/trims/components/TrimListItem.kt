@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,9 +27,14 @@ fun TrimListItem(
     onItemCLick: (CarTrim) -> Unit
 ) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp),
         shape = RoundedCornerShape(14.dp),
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.primaryContainer
+        )
     ) {
         Column(
             modifier = Modifier
@@ -36,22 +42,21 @@ fun TrimListItem(
                 .clickable { onItemCLick(trim) }
                 .padding(10.dp)
         ) {
-            Text(text = trim.name)
             Text(
                 text = trim.description,
-                fontSize = 12.sp,
-                color = MaterialTheme.colorScheme.secondary
+                color = MaterialTheme.colorScheme.primary
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = "MSRP: ${trim.msrp.toCurrency()}",
                 fontSize = 12.sp
             )
-
-            Text(
-                text = "Dealer's cost: ${trim.invoice.toCurrency()}",
-                fontSize = 12.sp
-            )
+            if(trim.invoice > 0) {
+                Text(
+                    text = "Dealer's cost: ${trim.invoice.toCurrency()}",
+                    fontSize = 12.sp
+                )
+            }
         }
     }
 }

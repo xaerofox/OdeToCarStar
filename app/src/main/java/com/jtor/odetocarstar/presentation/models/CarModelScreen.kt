@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.jtor.odetocarstar.presentation.models.components.ModelListItem
+import com.jtor.odetocarstar.presentation.util.route.Screen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -66,7 +67,9 @@ fun CarModelScreen(
                     ModelListItem(
                         make = make,
                         model = model,
-                        onItemClick = {/* TODO */ })
+                        onItemClick = {
+                            navController?.navigate(Screen.CarTrimScreen.withArgs(model.name, model.id.toString(), year))
+                        })
                 }
             }
 
