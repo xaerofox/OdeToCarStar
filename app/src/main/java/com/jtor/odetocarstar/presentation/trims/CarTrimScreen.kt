@@ -18,6 +18,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,6 +29,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.jtor.odetocarstar.presentation.trims.components.TrimDetailBottomSheet
 import com.jtor.odetocarstar.presentation.trims.components.TrimListItem
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -37,6 +42,14 @@ fun CarTrimScreen(
     modelId: String
 ) {
     viewModel.getTrims(year.toInt(), modelId.toInt())
+
+    var showSheet by remember { mutableStateOf(false) }
+
+    if(showSheet) {
+        TrimDetailBottomSheet {
+            showSheet = false
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -63,7 +76,9 @@ fun CarTrimScreen(
         ) {
             LazyColumn(modifier = Modifier.fillMaxSize()) {
                 items(state.trims) {trim ->
-                    TrimListItem(trim = trim, onItemCLick = {})
+                    TrimListItem(trim = trim, onItemCLick = {
+                            showSheet = true
+                    })
                 }
             }
 
