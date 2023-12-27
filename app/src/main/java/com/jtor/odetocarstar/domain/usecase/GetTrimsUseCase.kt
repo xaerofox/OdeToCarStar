@@ -9,7 +9,7 @@ import okio.IOException
 import javax.inject.Inject
 
 class GetTrimsUseCase @Inject constructor(
-    private val  repository: CarRepository
+    private val repository: CarRepository
 ) {
     operator fun invoke(year: Int, modelId: Int): Flow<Resource<List<CarTrim>>> = flow {
         try {

@@ -3,6 +3,7 @@ package com.jtor.odetocarstar.data.repository
 import com.jtor.odetocarstar.domain.model.CarMake
 import com.jtor.odetocarstar.domain.model.CarModel
 import com.jtor.odetocarstar.domain.model.CarTrim
+import com.jtor.odetocarstar.domain.model.CarTrimDetail
 import com.jtor.odetocarstar.domain.repository.CarApi
 import com.jtor.odetocarstar.domain.repository.CarRepository
 import javax.inject.Inject
@@ -29,5 +30,8 @@ class CarRepositoryImpl @Inject constructor(
 
     override suspend fun getTrims(year: Int, modelId: Int): List<CarTrim> =
         api.getTrims(year, modelId).data
+
+    override suspend fun getTrimDetail(id: Int): CarTrimDetail =
+        api.getTrimDetail(id)
 
 }

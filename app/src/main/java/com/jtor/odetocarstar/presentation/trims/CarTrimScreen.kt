@@ -50,10 +50,9 @@ fun CarTrimScreen(
         viewModel.getTrims(rememberedYear, rememberedModelId)
     }
 
-
     var showSheet by remember { mutableStateOf(false) }
 
-    if(showSheet) {
+    if (showSheet) {
         TrimDetailBottomSheet {
             showSheet = false
         }
@@ -78,14 +77,15 @@ fun CarTrimScreen(
         }
     ) {
         val state = viewModel.state.value
-        Box(modifier = Modifier
-            .padding(it)
-            .fillMaxSize()
+        Box(
+            modifier = Modifier
+                .padding(it)
+                .fillMaxSize()
         ) {
             LazyColumn(modifier = Modifier.fillMaxSize()) {
-                items(state.trims) {trim ->
+                items(state.trims) { trim ->
                     TrimListItem(trim = trim, onItemCLick = {
-                            showSheet = true
+                        showSheet = true
                     })
                 }
             }
