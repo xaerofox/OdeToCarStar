@@ -18,7 +18,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -41,7 +43,13 @@ fun CarTrimScreen(
     year: String,
     modelId: String
 ) {
-    viewModel.getTrims(year.toInt(), modelId.toInt())
+    val rememberedYear by remember { mutableIntStateOf(year.toInt()) }
+    val rememberedModelId by remember { mutableIntStateOf(modelId.toInt()) }
+
+    LaunchedEffect(rememberedYear, rememberedModelId) {
+        viewModel.getTrims(rememberedYear, rememberedModelId)
+    }
+
 
     var showSheet by remember { mutableStateOf(false) }
 
