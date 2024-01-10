@@ -10,6 +10,8 @@ import com.jtor.odetocarstar.domain.model.CarTrimDetail
 import com.jtor.odetocarstar.domain.usecase.GetTrimDetailUseCase
 import com.jtor.odetocarstar.domain.usecase.GetTrimsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
@@ -23,8 +25,8 @@ class CarTrimViewModel @Inject constructor(
     private val _state = mutableStateOf(TrimListState())
     val state: State<TrimListState> = _state
 
-    private val _detailState = mutableStateOf(TrimDetailState())
-    val detailState: State<TrimDetailState> = _detailState
+    private val _detailState = MutableStateFlow(TrimDetailState())
+    val detailState = _detailState.asStateFlow()
 
     fun getTrims(year: Int, modelId: Int) {
         getTrimsUseCase(year, modelId).onEach { result ->

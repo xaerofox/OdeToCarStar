@@ -16,9 +16,9 @@ data class CarTrimDetail(
     @Json(name = "make_model_trim_engine")
     val trimEngine: TrimEngine,
     @Json(name = "make_model_trim_exterior_colors")
-    val trimExteriorColors: List<TrimExteriorColor>,
+    val trimColors: List<TrimColor>,
     @Json(name = "make_model_trim_interior_colors")
-    val trimInteriorColors: List<TrimInteriorColor>,
+    val trimInteriorColors: List<TrimColor>,
     @Json(name = "make_model_trim_mileage")
     val trimMileage: TrimMilage,
     val modified: String,

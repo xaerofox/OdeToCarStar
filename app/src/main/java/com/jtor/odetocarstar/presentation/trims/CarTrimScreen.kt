@@ -19,6 +19,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -45,6 +46,7 @@ fun CarTrimScreen(
 ) {
     val rememberedYear by remember { mutableIntStateOf(year.toInt()) }
     val rememberedModelId by remember { mutableIntStateOf(modelId.toInt()) }
+    val trimDetailState by viewModel.detailState.collectAsState()
 
     LaunchedEffect(rememberedYear, rememberedModelId) {
         viewModel.getTrims(rememberedYear, rememberedModelId)
@@ -53,7 +55,7 @@ fun CarTrimScreen(
     var showSheet by remember { mutableStateOf(false) }
 
     if (showSheet) {
-        TrimDetailBottomSheet {
+        TrimDetailBottomSheet(trimDetail = trimDetailState.detail) {
             showSheet = false
         }
     }
@@ -84,9 +86,10 @@ fun CarTrimScreen(
         ) {
             LazyColumn(modifier = Modifier.fillMaxSize()) {
                 items(state.trims) { trim ->
-                    TrimListItem(trim = trim, onItemCLick = {
+                    TrimListItem(trim = trim) {
+                        viewModel.getTrimDetail(trim.id)
                         showSheet = true
-                    })
+                    }
                 }
             }
 
