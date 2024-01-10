@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.jtor.odetocarstar.core.Resource
 import com.jtor.odetocarstar.domain.model.CarTrim
 import com.jtor.odetocarstar.domain.model.CarTrimDetail
+import com.jtor.odetocarstar.domain.repository.CarRepository
 import com.jtor.odetocarstar.domain.usecase.GetTrimDetailUseCase
 import com.jtor.odetocarstar.domain.usecase.GetTrimsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,12 +15,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class CarTrimViewModel @Inject constructor(
     private val getTrimsUseCase: GetTrimsUseCase,
-    private val getTrimDetailUseCase: GetTrimDetailUseCase
+    private val repository: CarRepository
 ) : ViewModel() {
 
     private val _state = mutableStateOf(TrimListState())
@@ -48,13 +50,14 @@ class CarTrimViewModel @Inject constructor(
     }
 
     fun getTrimDetail(id: Int) {
-        getTrimDetailUseCase(id).onEach { result ->
-            when (result) {
-                is Resource.Error -> _detailState.value =
-                    TrimDetailState(error = result.message ?: "An unexpected error occurred")
-
-                is Resource.Loading -> _detailState.value = TrimDetailState(isLoading = true)
-                is Resource.Success -> _detailState.value = TrimDetailState(detail = result.data)
+        _detailState.value = TrimDetailState(isLoading = true)
+        viewModelScope.launch {
+            runCatching {
+                repository.getTrimDetail(id)
+            }.onSuccess {
+                _detailState.value = TrimDetailState(detail = it)
+            }.onFailure {
+                _detailState.value = TrimDetailState(error = it.message ?: "YO! SUMTHING WENT WRONG!")
             }
         }
     }

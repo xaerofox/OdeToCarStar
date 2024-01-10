@@ -55,7 +55,7 @@ fun CarTrimScreen(
     var showSheet by remember { mutableStateOf(false) }
 
     if (showSheet) {
-        TrimDetailBottomSheet(trimDetail = trimDetailState.detail) {
+        TrimDetailBottomSheet(trimDetailState = trimDetailState) {
             showSheet = false
         }
     }
@@ -78,7 +78,7 @@ fun CarTrimScreen(
             )
         }
     ) {
-        val state = viewModel.state.value
+        val state = viewModel.state.value //Could be an issue, use collect as state
         Box(
             modifier = Modifier
                 .padding(it)
