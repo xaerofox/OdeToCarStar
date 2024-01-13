@@ -45,6 +45,31 @@ fun TrimDetailBottomSheet(
                 TrimElementItem(name = "Description", value = it.description)
                 TrimElementItem(name = "MSRP", value = it.msrp.toCurrency())
 
+                DetailSection(headerTitle = "Body", content = {
+                    Column {
+                        TrimElementItem(name = "Length", value = it.trimBody.length)
+                        TrimElementItem(name = "Height", value = it.trimBody.height)
+                        TrimElementItem(name = "Cargo Capacity", value = it.trimBody.cargoCapacity)
+                        TrimElementItem(name = "Max Cargo Capacity", value = it.trimBody.maxCargoCapacity)
+                        TrimElementItem(name = "Max Towing Capacity", value = it.trimBody.maxTowingCapacity)
+                        TrimElementItem(name = "Curb Weight", value = "${it.trimBody.curbWeight} lbs")
+                        TrimElementItem(name = "Gross Weight", value = "${it.trimBody.grossWeight} lbs")
+                        TrimElementItem(name = "Doors", value = it.trimBody.doors.toString())
+                    }
+                })
+
+                DetailSection(headerTitle = "Engine", content = {
+                    Column {
+                        TrimElementItem(name = "Engine Type", value = it.trimEngine.engineType)
+                        TrimElementItem(name = "Fuel Type", value = it.trimEngine.fuelType)
+                        TrimElementItem(name = "Cylinders", value = it.trimEngine.cylinders)
+                        TrimElementItem(name = "Drive Type", value = it.trimEngine.driveType)
+                        TrimElementItem(name = "Horsepower", value = "${it.trimEngine.horsepowerHp} HP")
+                        TrimElementItem(name = "Horsepower RPM", value = "${it.trimEngine.horsepowerRpm} RPM")
+                        TrimElementItem(name = "Transmission", value = it.trimEngine.transmission)
+                    }
+                })
+
                 TrimColorPalette(
                     title = "Exterior Colors",
                     trimColors = it.trimExteriorColors,

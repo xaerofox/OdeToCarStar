@@ -18,7 +18,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun TrimElementItem(name: String, value: String) {
+fun TrimElementItem(name: String, value: String?) {
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -45,7 +46,7 @@ fun TrimElementItem(name: String, value: String) {
         Spacer(modifier = Modifier.width(8.dp))
 
         Text(
-            text = value,
+            text = if(value.isNullOrEmpty() || value.contains("null")) "N/A" else value,
             style = MaterialTheme.typography.bodyMedium,
             textAlign = TextAlign.Right
         )

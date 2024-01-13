@@ -2,7 +2,7 @@ package com.jtor.odetocarstar.domain.model
 
 import com.squareup.moshi.Json
 
-data class TrimMilage(
+data class TrimMileage(
     @Json(name = "battery_capacity_electric")
     val batteryCapacityElectric: String?,
     @Json(name = "combined_mpg")
@@ -22,14 +22,14 @@ data class TrimMilage(
     @Json(name = "epa_time_to_charge_hr_240v_electric")
     val timeToCharge: Int?,
     @Json(name = "fuel_tank_capacity")
-    val fuelTankCapacity: String,
-    val id: Int,
+    val fuelTankCapacity: String?,
+    val id: Int?,
     @Json(name = "make_model_trim_id")
-    val trimId: Int,
+    val trimId: Int?,
     @Json(name = "range_city")
-    val rangeCity: Int,
+    val rangeCity: Int?,
     @Json(name = "range_electric")
     val rangeElectric: Int?,
     @Json(name = "range_highway")
-    val rangeHighway: Int
+    val rangeHighway: Int?
 )

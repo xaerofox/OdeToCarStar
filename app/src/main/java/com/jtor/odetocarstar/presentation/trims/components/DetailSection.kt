@@ -36,7 +36,7 @@ fun DetailSection(
 
     Column(modifier = Modifier
         .fillMaxWidth()
-        .padding(horizontal = 8.dp)
+        .padding(horizontal = 12.dp)
         .clickable { isExpanded = !isExpanded }) {
         Row(
             verticalAlignment = Alignment.CenterVertically,

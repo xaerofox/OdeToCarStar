@@ -4,28 +4,28 @@ import com.squareup.moshi.Json
 
 data class TrimEngine(
     @Json(name = "cam_type")
-    val camType: String,
-    val cylinders: String,
+    val camType: String?,
+    val cylinders: String?,
     @Json(name = "drive_type")
-    val driveType: String,
+    val driveType: String?,
     @Json(name = "engine_type")
-    val engineType: String,
+    val engineType: String?,
     @Json(name = "fuel_type")
-    val fuelType: String,
+    val fuelType: String?,
     @Json(name = "horsepower_hp")
-    val horsepowerHp: Int,
+    val horsepowerHp: Int?,
     @Json(name = "horsepower_rpm")
-    val horsepowerRpm: Int,
-    val id: Int,
+    val horsepowerRpm: Int?,
+    val id: Int?,
     @Json(name = "make_model_trim_id")
-    val trimId: Int,
-    val size: String,
+    val trimId: Int?,
+    val size: String?,
     @Json(name = "torque_ft_lbs")
-    val torquePoundFoot: Int,
+    val torquePoundFoot: Int?,
     @Json(name = "torque_rpm")
-    val torqueRpm: Int,
-    val transmission: String,
+    val torqueRpm: Int?,
+    val transmission: String?,
     @Json(name = "valve_timing")
-    val valveTiming: String,
-    val valves: Int
+    val valveTiming: String?,
+    val valves: Int?
 )
