@@ -10,7 +10,7 @@ OdeToCarStar is an Android application that simply provides vehicle information 
 The [Cars API](https://rapidapi.com/carapi/api/car-api2/) was used to get the vehicle information which utilizes the free tier of the API. So, acquire an API key and add `API_KEY=[your key]` to your `local.properties`. 
 
 ## Next steps
-The project started originally for me explore the new Jetpack Compose UI toolkit, but they are some features and improvements I can add to this project.  Some simple and some ambitious:
+The project started originally for me explore the new Jetpack Compose UI toolkit, but there are some features and improvements I can add to this project.  Some simple and some ambitious:
 
 * Caching - Probably an obvious one to reduce the reliance on making calls as the project uses a free tier which (if I recall) has a max of 5,000 requests per month.  I didn't quite add it early because of the had thoughts about the following stuff
 
