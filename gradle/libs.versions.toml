@@ -5,6 +5,7 @@ coil-compose = "2.4.0"
 converter-moshi = "2.9.0"
 core-ktx = "1.12.0"
 espresso-core = "3.5.1"
+generativeai = "0.1.2"
 hilt-compiler = "1.1.0"
 hilt-lifecycle-viewmodel = "1.0.0-alpha03"
 junit = "4.13.2"
@@ -39,6 +40,7 @@ compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
 compose-material3 = { module = "androidx.compose.material3:material3" }
 converter-moshi = { module = "com.squareup.retrofit2:converter-moshi", version.ref = "converter-moshi" }
+generativeai = { module = "com.google.ai.client.generativeai:generativeai", version.ref = "generativeai" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
 hilt-android-complier = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
 junit = { module = "junit:junit", version.ref = "junit" }

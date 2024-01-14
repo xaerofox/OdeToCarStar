@@ -65,8 +65,12 @@ class MainActivity : ComponentActivity() {
                             )
                         }
 
-                        composable(route = Screen.CarTrimScreen.route + "/{modelName}/{modelId}/{year}",
+                        composable(route = Screen.CarTrimScreen.route + "/{make}/{modelName}/{modelId}/{year}",
                             arguments = listOf(
+                                navArgument("make") {
+                                    type = NavType.StringType
+                                    defaultValue = ""
+                                },
                                 navArgument("modelName") {
                                     type = NavType.StringType
                                     defaultValue = ""
@@ -85,7 +89,8 @@ class MainActivity : ComponentActivity() {
                                 navController = navController,
                                 modelName = it.arguments?.getString("modelName")!!,
                                 year = it.arguments?.getString("year")!!,
-                                modelId = it.arguments?.getString("modelId")!!
+                                modelId = it.arguments?.getString("modelId")!!,
+                                make = it.arguments?.getString("make")!!,
                             )
                         }
                     }

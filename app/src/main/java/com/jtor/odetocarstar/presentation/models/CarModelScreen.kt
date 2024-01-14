@@ -80,6 +80,7 @@ fun CarModelScreen(
                         onItemClick = {
                             navController?.navigate(
                                 Screen.CarTrimScreen.withArgs(
+                                    make,
                                     model.name,
                                     model.id.toString(),
                                     year

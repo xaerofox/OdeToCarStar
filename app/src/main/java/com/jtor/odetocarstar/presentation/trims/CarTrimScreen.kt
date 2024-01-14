@@ -4,10 +4,16 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -42,17 +48,20 @@ fun CarTrimScreen(
     viewModel: CarTrimViewModel = hiltViewModel(),
     modelName: String,
     year: String,
-    modelId: String
+    modelId: String,
+    make: String
 ) {
     val rememberedYear by remember { mutableIntStateOf(year.toInt()) }
     val rememberedModelId by remember { mutableIntStateOf(modelId.toInt()) }
     val trimDetailState by viewModel.detailState.collectAsState()
+    val carFactState by viewModel.carFactState.collectAsState()
 
     LaunchedEffect(rememberedYear, rememberedModelId) {
         viewModel.getTrims(rememberedYear, rememberedModelId)
     }
 
     var showSheet by remember { mutableStateOf(false) }
+    var isButtonVisible by remember { mutableStateOf(true) }
 
     if (showSheet) {
         TrimDetailBottomSheet(trimDetailState = trimDetailState) {
@@ -84,7 +93,52 @@ fun CarTrimScreen(
                 .padding(it)
                 .fillMaxSize()
         ) {
-            LazyColumn(modifier = Modifier.fillMaxSize()) {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .align(Alignment.Center)
+            ) {
+                item {
+                    if (isButtonVisible) {
+                        Button(
+                            modifier = Modifier
+                                .align(Alignment.Center),
+                            colors = ButtonDefaults.buttonColors(containerColor = Color.Yellow),
+                            onClick = {
+                                viewModel.genCarFact(year.toInt(), make, modelName)
+                            }) {
+                            Text(text = "Did you know?", color = Color.Black)
+                        }
+                    }
+                }
+
+                item {
+                    if (carFactState.isLoading) {
+                        isButtonVisible = true
+                        CircularProgressIndicator(
+                            modifier = Modifier
+                                .size(10.dp)
+                                .align(Alignment.Center)
+                        )
+                    }
+
+                    if (carFactState.response.isNotBlank()) {
+                        isButtonVisible = false
+                        Card(
+                            modifier = Modifier
+                                .padding(10.dp),
+                            shape = RoundedCornerShape(14.dp),
+                            colors = CardDefaults.cardColors(containerColor = Color.Yellow)
+                        ) {
+                            Text(
+                                modifier = Modifier.padding(4.dp),
+                                text = carFactState.response,
+                                color = Color.Black
+                            )
+                        }
+                    }
+                }
+
                 items(state.trims) { trim ->
                     TrimListItem(trim = trim) {
                         viewModel.getTrimDetail(trim.id)

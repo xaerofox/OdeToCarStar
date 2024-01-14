@@ -29,6 +29,7 @@ android {
         buildConfigField("String", "BASE_URL", "\"https://car-api2.p.rapidapi.com\"")
         buildConfigField("String", "RAPID_HOST", "\"car-api2.p.rapidapi.com\"")
         buildConfigField("String", "RAPID_API_KEY", "\"${gradleLocalProperties(rootDir).getProperty("API_KEY")}\"")
+        buildConfigField("String", "GEMINI_PREVIEW_KEY", "\"${gradleLocalProperties(rootDir).getProperty("GEMINI_KEY")}\"")
     }
 
     buildTypes {
@@ -85,6 +86,9 @@ dependencies {
 
     //Coil
     implementation(libs.coil.compose)
+
+    //Google AI SDK
+    implementation(libs.generativeai)
 
     testImplementation(libs.junit)
 

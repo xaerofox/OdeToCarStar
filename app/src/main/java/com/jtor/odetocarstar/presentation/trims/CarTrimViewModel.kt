@@ -4,11 +4,12 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.ai.client.generativeai.GenerativeModel
+import com.jtor.odetocarstar.BuildConfig
 import com.jtor.odetocarstar.core.Resource
 import com.jtor.odetocarstar.domain.model.CarTrim
 import com.jtor.odetocarstar.domain.model.CarTrimDetail
 import com.jtor.odetocarstar.domain.repository.CarRepository
-import com.jtor.odetocarstar.domain.usecase.GetTrimDetailUseCase
 import com.jtor.odetocarstar.domain.usecase.GetTrimsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,11 +25,23 @@ class CarTrimViewModel @Inject constructor(
     private val repository: CarRepository
 ) : ViewModel() {
 
+    private lateinit var generativeModel: GenerativeModel
+
     private val _state = mutableStateOf(TrimListState())
     val state: State<TrimListState> = _state
 
     private val _detailState = MutableStateFlow(TrimDetailState())
     val detailState = _detailState.asStateFlow()
+
+    private val _carFactState = MutableStateFlow(CarFactState())
+    val carFactState = _carFactState.asStateFlow()
+
+    init {
+        generativeModel = GenerativeModel(
+            modelName = "gemini-pro",
+            apiKey = BuildConfig.GEMINI_PREVIEW_KEY
+        )
+    }
 
     fun getTrims(year: Int, modelId: Int) {
         getTrimsUseCase(year, modelId).onEach { result ->
@@ -61,6 +74,20 @@ class CarTrimViewModel @Inject constructor(
             }
         }
     }
+
+    fun genCarFact(year: Int, make: String, model: String) {
+        _carFactState.value = CarFactState(isLoading = true)
+        val prompt = "Give me an interesting fact about the $year $make $model."
+        viewModelScope.launch {
+            runCatching {
+                generativeModel.generateContent(prompt)
+            }.onSuccess {
+                _carFactState.value = CarFactState(response = it.text ?: "No generative response")
+            }.onFailure {
+                _carFactState.value = CarFactState(error = it.message ?: "An error occurred with generative response")
+            }
+        }
+    }
 }
 
 data class TrimListState(
@@ -72,5 +99,11 @@ data class TrimListState(
 data class TrimDetailState(
     val isLoading: Boolean = false,
     val detail: CarTrimDetail? = null,
+    val error: String = ""
+)
+
+data class CarFactState(
+    val isLoading: Boolean = false,
+    val response: String = "",
     val error: String = ""
 )
