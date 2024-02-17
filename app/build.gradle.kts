@@ -86,7 +86,23 @@ dependencies {
     //Coil
     implementation(libs.coil.compose)
 
+    testImplementation(libs.androidx.core)
     testImplementation(libs.junit)
+    testImplementation(libs.androidx.core.testing)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.truth)
+    testImplementation(libs.mockwebserver)
+    testImplementation(libs.mockk)
+
+    androidTestImplementation(libs.hilt.android.testing)
+    kaptAndroidTest(libs.hilt.android.compiler.v237)
+    androidTestImplementation(libs.kotlinx.coroutines.test)
+    androidTestImplementation(libs.androidx.core.testing)
+    androidTestImplementation(libs.truth)
+    androidTestImplementation(libs.core.ktx)
+    androidTestImplementation(libs.mockwebserver)
+    androidTestImplementation(libs.mockk)
+    androidTestImplementation(libs.androidx.runner)
 
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
