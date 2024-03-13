@@ -131,7 +131,7 @@ fun CarTrimScreen(
                             colors = CardDefaults.cardColors(containerColor = Color.Yellow)
                         ) {
                             Text(
-                                modifier = Modifier.padding(4.dp),
+                                modifier = Modifier.padding(8.dp),
                                 text = carFactState.response,
                                 color = Color.Black
                             )
