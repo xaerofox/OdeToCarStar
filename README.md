@@ -18,4 +18,4 @@ The project started originally for me explore the new Jetpack Compose UI toolkit
 
 * OBD (On-Board Diagnostics) - This one may be too ambitious as this will have me explore bluetooth development and possibly obtaining knowledge around the OBD II standards.  There may be libraries already, but will it also play nice with KMP?
 
-* Gemni Pro?
+* Gemini Pro - (UPDATE) Branch added to integrate Gemini Pro
