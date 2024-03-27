@@ -27,14 +27,13 @@ import com.jtor.odetocarstar.domain.model.TrimColor
 @Composable
 fun TrimColorPalette(
     title: String,
-    trimColors: List<TrimColor>,
-    modifier: Modifier = Modifier
+    trimColors: List<TrimColor>
 ) {
     var selectedTrimColorName by remember { mutableStateOf("") }
 
-    Column(modifier = modifier) {
+    Column(modifier = Modifier.fillMaxWidth()) {
         Text(
-            modifier = Modifier.padding(bottom = 4.dp),
+            modifier = Modifier.padding(6.dp),
             text = title,
             style = MaterialTheme.typography.labelLarge
         )
@@ -99,11 +98,6 @@ fun TrimColorPalettePreview() {
                 name = "Unreal Green",
                 rgb = "22,220,40"
             )
-        ),
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(120.dp)
-
-
+        )
     )
 }

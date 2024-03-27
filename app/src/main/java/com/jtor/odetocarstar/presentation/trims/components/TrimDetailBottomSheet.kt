@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -73,23 +72,10 @@ fun TrimDetailBottomSheet(
                 TrimColorPalette(
                     title = "Exterior Colors",
                     trimColors = it.trimExteriorColors,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(130.dp)
-                        .padding(
-                            horizontal = 12.dp
-                        )
                 )
                 TrimColorPalette(
                     title = "Interior Colors",
                     trimColors = it.trimInteriorColors,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(130.dp)
-                        .padding(
-                            horizontal = 12.dp,
-                            vertical = 4.dp
-                        )
                 )
             }
 
