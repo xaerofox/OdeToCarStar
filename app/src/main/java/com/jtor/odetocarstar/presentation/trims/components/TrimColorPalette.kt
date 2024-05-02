@@ -56,7 +56,8 @@ fun TrimColorPalette(
                 ) {
                     items(trimColors) { trimColor ->
                         ColorTile(
-                            trimColor = trimColor
+                            trimColor = trimColor,
+                            isSelected = selectedTrimColorName == trimColor.name
                         ) {
                             selectedTrimColorName = it.name
                         }
