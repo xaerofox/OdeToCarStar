@@ -41,7 +41,7 @@ fun ColorTile(trimColor: TrimColor, isSelected: Boolean = false, onClick: (TrimC
         .background(color)
         .border(
             width = 2.dp,
-            color = if (isSelected) Color.Black else Color.Transparent,
+            color = if (isSelected) getBorderColor(color) else Color.Transparent,
             shape = CircleShape
         )
         .clickable { onClick(trimColor) }) {
@@ -53,6 +53,22 @@ fun ColorTile(trimColor: TrimColor, isSelected: Boolean = false, onClick: (TrimC
                 colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary)
             )
     }
+}
+
+private fun relativeLuminance(color: Color): Float {
+    val r = color.red * 0.2126f
+    val g = color.green * 0.7152f
+    val b = color.blue * 0.0722f
+
+    return r + g + b
+}
+
+private fun getBorderColor(color: Color): Color {
+    val luminance = relativeLuminance(color)
+    val threshold = 0.5f // adjust based on your preference
+
+    val isLightColor = luminance > threshold
+    return if (isLightColor) Color.Black else Color.White
 }
 
 @Preview(showBackground = true)
