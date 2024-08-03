@@ -17,7 +17,8 @@ class GetTrimDetailUseCase @Inject constructor(
             val detail = repository.getTrimDetail(id)
             emit(Resource.Success(detail))
         } catch (_: IOException) {
+            emit(Resource.Error("Couldn't reach server. Please check your connection"))
         }
-        emit(Resource.Error("Couldn't reach server. Please check your connection"))
+
     }
 }

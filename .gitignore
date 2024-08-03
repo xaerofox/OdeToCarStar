@@ -17,3 +17,6 @@ local.properties
 .idea/appInsightsSettings.xml
 .idea/deploymentTargetDropDown.xml
 .idea/migrations.xml
+.idea/deploymentTargetSelector.xml
+.idea/other.xml
+.idea/studiobot.xml

@@ -8,7 +8,6 @@ import com.jtor.odetocarstar.core.Resource
 import com.jtor.odetocarstar.domain.model.CarTrim
 import com.jtor.odetocarstar.domain.model.CarTrimDetail
 import com.jtor.odetocarstar.domain.repository.CarRepository
-import com.jtor.odetocarstar.domain.usecase.GetTrimDetailUseCase
 import com.jtor.odetocarstar.domain.usecase.GetTrimsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -57,7 +56,7 @@ class CarTrimViewModel @Inject constructor(
             }.onSuccess {
                 _detailState.value = TrimDetailState(detail = it)
             }.onFailure {
-                _detailState.value = TrimDetailState(error = it.message ?: "YO! SUMTHING WENT WRONG!")
+                _detailState.value = TrimDetailState(error = it.message ?: "YO! SOMETHING WENT WRONG!")
             }
         }
     }

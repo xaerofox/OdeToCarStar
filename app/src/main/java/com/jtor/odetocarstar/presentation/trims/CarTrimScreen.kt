@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -46,6 +46,7 @@ fun CarTrimScreen(
 ) {
     val rememberedYear by remember { mutableIntStateOf(year.toInt()) }
     val rememberedModelId by remember { mutableIntStateOf(modelId.toInt()) }
+    val state: TrimListState by viewModel.state
     val trimDetailState by viewModel.detailState.collectAsState()
 
     LaunchedEffect(rememberedYear, rememberedModelId) {
@@ -72,41 +73,41 @@ fun CarTrimScreen(
                 ),
                 navigationIcon = {
                     IconButton(onClick = { navController?.popBackStack() }) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = null)
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null)
                     }
                 }
             )
         }
     ) {
-        val state = viewModel.state.value //Could be an issue, use collect as state
         Box(
             modifier = Modifier
                 .padding(it)
                 .fillMaxSize()
         ) {
-            LazyColumn(modifier = Modifier.fillMaxSize()) {
-                items(state.trims) { trim ->
-                    TrimListItem(trim = trim) {
-                        viewModel.getTrimDetail(trim.id)
-                        showSheet = true
+            when {
+                state.isLoading -> CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                state.error.isNotBlank() -> {
+                    Text(
+                        text = state.error,
+                        color = Color.Red,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 20.dp)
+                            .align(Alignment.Center)
+                    )
+                }
+
+                else -> {
+                    LazyColumn(modifier = Modifier.fillMaxSize()) {
+                        items(state.trims) { trim ->
+                            TrimListItem(trim = trim) {
+                                viewModel.getTrimDetail(trim.id)
+                                showSheet = true
+                            }
+                        }
                     }
                 }
-            }
-
-            if (state.error.isNotBlank()) {
-                Text(
-                    text = state.error,
-                    color = Color.Red,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 20.dp)
-                        .align(Alignment.Center)
-                )
-            }
-
-            if (state.isLoading) {
-                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
             }
         }
     }
