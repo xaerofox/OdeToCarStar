@@ -5,19 +5,19 @@ import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.android.kotlin)
-
-    kotlin("kapt")
+    alias(libs.plugins.android.ksp)
+    alias(libs.plugins.compose.compiler)
     alias(libs.plugins.dagger.hilt)
 }
 
 android {
     namespace = "com.jtor.odetocarstar"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.jtor.odetocarstar"
         minSdk = 28
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -68,10 +68,10 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.compose)
 
     //Hilt
-    kapt(libs.hilt.android.complier)
+    ksp(libs.hilt.android.complier)
     implementation(libs.hilt.android)
     //implementation(libs.androidx.hilt.lifecycle.viewmodel)
-    kapt(libs.androidx.hilt.compiler)
+    ksp(libs.androidx.hilt.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
 
     //Retrofit
@@ -85,7 +85,7 @@ dependencies {
 
     //Room
     implementation(libs.room.runtime)
-    kapt(libs.room.compiler)
+    ksp(libs.room.compiler)
     implementation(libs.room.ktx)
 
     //Coil
@@ -100,7 +100,7 @@ dependencies {
     testImplementation(libs.mockk)
 
     androidTestImplementation(libs.hilt.android.testing)
-    kaptAndroidTest(libs.hilt.android.compiler.v237)
+    kspAndroidTest(libs.hilt.android.compiler.v237)
     androidTestImplementation(libs.kotlinx.coroutines.test)
     androidTestImplementation(libs.androidx.core.testing)
     androidTestImplementation(libs.truth)
