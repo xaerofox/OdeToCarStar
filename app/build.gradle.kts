@@ -28,7 +28,7 @@ android {
 
         buildConfigField("String", "BASE_URL", "\"https://car-api2.p.rapidapi.com\"")
         buildConfigField("String", "RAPID_HOST", "\"car-api2.p.rapidapi.com\"")
-        buildConfigField("String", "RAPID_API_KEY", "\"${gradleLocalProperties(rootDir).getProperty("API_KEY")}\"")
+        buildConfigField("String", "RAPID_API_KEY", "\"${gradleLocalProperties(rootDir, providers).getProperty("API_KEY")}\"")
     }
 
     buildTypes {

@@ -24,7 +24,7 @@ retro = "2.9.0"
 room = "2.5.2"
 okhttp = "4.11.0"
 
-android-gradle = "8.2.2"
+android-gradle = "8.10.1"
 kotlin = "1.8.10"
 hilt = "2.48"
 runner = "1.5.2"
