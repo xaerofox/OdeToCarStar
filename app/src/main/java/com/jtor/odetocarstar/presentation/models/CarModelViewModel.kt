@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jtor.odetocarstar.core.Resource
-import com.jtor.odetocarstar.domain.model.CarModel
+import com.jtor.odetocarstar.data.model.CarModel
 import com.jtor.odetocarstar.domain.usecase.GetModelsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn

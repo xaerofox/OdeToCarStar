@@ -19,7 +19,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.jtor.odetocarstar.R
-import com.jtor.odetocarstar.domain.model.TrimColor
+import com.jtor.odetocarstar.data.model.TrimColor
 
 @Composable
 fun ColorTile(trimColor: TrimColor, isSelected: Boolean = false, onClick: (TrimColor) -> Unit) {

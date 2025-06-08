@@ -1,4 +1,4 @@
-package com.jtor.odetocarstar.domain.model
+package com.jtor.odetocarstar.data.model
 
 data class CarMake(
     val id: Int,

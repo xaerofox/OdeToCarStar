@@ -21,7 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.jtor.odetocarstar.domain.model.CarMake
+import com.jtor.odetocarstar.data.model.CarMake
 import com.jtor.odetocarstar.presentation.util.Constants
 import com.jtor.odetocarstar.presentation.util.theme.OdeToCarStarTheme
 

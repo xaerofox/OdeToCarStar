@@ -5,9 +5,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jtor.odetocarstar.core.Resource
-import com.jtor.odetocarstar.domain.model.CarTrim
-import com.jtor.odetocarstar.domain.model.CarTrimDetail
-import com.jtor.odetocarstar.domain.repository.CarRepository
+import com.jtor.odetocarstar.data.model.CarTrim
+import com.jtor.odetocarstar.data.model.CarTrimDetail
+import com.jtor.odetocarstar.data.repository.CarRepository
 import com.jtor.odetocarstar.domain.usecase.GetTrimsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

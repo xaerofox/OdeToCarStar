@@ -1,8 +1,8 @@
 package com.jtor.odetocarstar.domain.usecase
 
 import com.jtor.odetocarstar.core.Resource
-import com.jtor.odetocarstar.domain.model.CarModel
-import com.jtor.odetocarstar.domain.repository.CarRepository
+import com.jtor.odetocarstar.data.model.CarModel
+import com.jtor.odetocarstar.data.repository.CarRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import okio.IOException

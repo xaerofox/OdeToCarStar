@@ -1,6 +1,6 @@
 package com.jtor.odetocarstar.data.remote.dto
 
-import com.jtor.odetocarstar.domain.model.Collection
+import com.jtor.odetocarstar.data.model.Collection
 
 data class CollectionDto<T>(
     val collection: Collection,

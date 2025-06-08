@@ -1,10 +1,10 @@
-package com.jtor.odetocarstar.domain.repository
+package com.jtor.odetocarstar.data.repository
 
 import com.jtor.odetocarstar.data.remote.dto.CollectionDto
-import com.jtor.odetocarstar.domain.model.CarMake
-import com.jtor.odetocarstar.domain.model.CarModel
-import com.jtor.odetocarstar.domain.model.CarTrim
-import com.jtor.odetocarstar.domain.model.CarTrimDetail
+import com.jtor.odetocarstar.data.model.CarMake
+import com.jtor.odetocarstar.data.model.CarModel
+import com.jtor.odetocarstar.data.model.CarTrim
+import com.jtor.odetocarstar.data.model.CarTrimDetail
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query

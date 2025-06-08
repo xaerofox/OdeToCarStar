@@ -1,11 +1,9 @@
 package com.jtor.odetocarstar.data.repository
 
-import com.jtor.odetocarstar.domain.model.CarMake
-import com.jtor.odetocarstar.domain.model.CarModel
-import com.jtor.odetocarstar.domain.model.CarTrim
-import com.jtor.odetocarstar.domain.model.CarTrimDetail
-import com.jtor.odetocarstar.domain.repository.CarApi
-import com.jtor.odetocarstar.domain.repository.CarRepository
+import com.jtor.odetocarstar.data.model.CarMake
+import com.jtor.odetocarstar.data.model.CarModel
+import com.jtor.odetocarstar.data.model.CarTrim
+import com.jtor.odetocarstar.data.model.CarTrimDetail
 import javax.inject.Inject
 
 class CarRepositoryImpl @Inject constructor(

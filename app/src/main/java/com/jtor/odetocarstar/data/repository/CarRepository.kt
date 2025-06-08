@@ -1,9 +1,9 @@
-package com.jtor.odetocarstar.domain.repository
+package com.jtor.odetocarstar.data.repository
 
-import com.jtor.odetocarstar.domain.model.CarMake
-import com.jtor.odetocarstar.domain.model.CarModel
-import com.jtor.odetocarstar.domain.model.CarTrim
-import com.jtor.odetocarstar.domain.model.CarTrimDetail
+import com.jtor.odetocarstar.data.model.CarMake
+import com.jtor.odetocarstar.data.model.CarModel
+import com.jtor.odetocarstar.data.model.CarTrim
+import com.jtor.odetocarstar.data.model.CarTrimDetail
 
 interface CarRepository {
     suspend fun getMakes(year: Int?, sort: String?) : List<CarMake>
