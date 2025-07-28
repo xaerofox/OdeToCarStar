@@ -8,19 +8,19 @@ data class CarTrimDetail(
     val id: Int,
     val invoice: Int,
     @Json(name = "make_model")
-    val makeModel: MakeModel,
+    val makeModel: MakeModel?,
     @Json(name = "make_model_id")
     val modelId: Int,
     @Json(name = "make_model_trim_body")
-    val trimBody: TrimBody,
+    val trimBody: TrimBody?,
     @Json(name = "make_model_trim_engine")
-    val trimEngine: TrimEngine,
+    val trimEngine: TrimEngine?,
     @Json(name = "make_model_trim_exterior_colors")
     val trimExteriorColors: List<TrimColor>,
     @Json(name = "make_model_trim_interior_colors")
     val trimInteriorColors: List<TrimColor>,
     @Json(name = "make_model_trim_mileage")
-    val trimMileage: TrimMileage,
+    val trimMileage: TrimMileage?,
     val modified: String,
     val msrp: Int,
     val name: String,
