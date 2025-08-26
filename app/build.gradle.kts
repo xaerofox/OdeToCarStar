@@ -66,6 +66,7 @@ dependencies {
     implementation(libs.bundles.compose)
     implementation(platform(libs.compose.bom))
     implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.androidx.navigation.compose)
 
     //Hilt
     ksp(libs.hilt.android.complier)
