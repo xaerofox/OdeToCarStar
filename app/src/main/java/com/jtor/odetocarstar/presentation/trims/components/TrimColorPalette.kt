@@ -1,5 +1,6 @@
 package com.jtor.odetocarstar.presentation.trims.components
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -54,7 +55,8 @@ fun TrimColorPalette(
             ) {
                 LazyVerticalGrid(
                     modifier = Modifier.align(Alignment.CenterHorizontally),
-                    columns = GridCells.Adaptive(30.dp)
+                    columns = GridCells.FixedSize(36.dp),
+                    horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
                     items(trimColors) { trimColor ->
                         ColorTile(
