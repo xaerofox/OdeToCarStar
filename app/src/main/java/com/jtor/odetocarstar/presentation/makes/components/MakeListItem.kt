@@ -7,13 +7,14 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
+import coil.compose.SubcomposeAsyncImage
 import com.jtor.odetocarstar.data.model.CarMake
 import com.jtor.odetocarstar.presentation.util.Constants
 import com.jtor.odetocarstar.presentation.util.theme.OdeToCarStarTheme
@@ -29,9 +30,15 @@ fun MakeListItem(
             .clickable { onItemClick(make) }
             .padding(10.dp)
     ) {
-        AsyncImage(
+        SubcomposeAsyncImage (
             model = findMakeLogo(make.name.lowercase()),
             contentDescription = "${make.name} logo",
+            loading = {
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .padding(64.dp)
+                )
+            },
             modifier = Modifier
                 .clip(RoundedCornerShape(10.dp))
                 .aspectRatio(100f/100f, true)

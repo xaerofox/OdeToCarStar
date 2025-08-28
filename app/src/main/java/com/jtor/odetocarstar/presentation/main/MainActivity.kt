@@ -51,30 +51,35 @@ class MainActivity : ComponentActivity() {
                 },
                 exitTransition = {
                     return@composable slideOutOfContainer(
-                        AnimatedContentTransitionScope.SlideDirection.Start, tween(700)
+                        AnimatedContentTransitionScope.SlideDirection.Start, tween(500)
                     )
                 },
                 popEnterTransition = {
                     return@composable slideIntoContainer(
-                        AnimatedContentTransitionScope.SlideDirection.End, tween(700)
+                        AnimatedContentTransitionScope.SlideDirection.End, tween(500)
                     )
                 }
             ) {
                 CarMakeScreen(navController)
             }
-
+            
             composable(
                 Screen.CarYearScreen.route + "/{makeId}",
                 enterTransition = {
                     return@composable slideIntoContainer(
-                        AnimatedContentTransitionScope.SlideDirection.Start, tween(700)
+                        AnimatedContentTransitionScope.SlideDirection.Start, tween(500)
                     )
                 },
                 popExitTransition = {
                     return@composable slideOutOfContainer(
-                        AnimatedContentTransitionScope.SlideDirection.End, tween(700)
+                        AnimatedContentTransitionScope.SlideDirection.End, tween(500)
                     )
                 },
+                popEnterTransition = {
+                    return@composable slideIntoContainer(
+                        AnimatedContentTransitionScope.SlideDirection.End, tween(500)
+                    )
+                }
             ) { entry ->
                 CarYearScreen(
                     make = entry.arguments?.getString("makeId")!!,
@@ -86,12 +91,17 @@ class MainActivity : ComponentActivity() {
                 route = Screen.CarModelScreen.route + "/{make}/{year}",
                 enterTransition = {
                     return@composable slideIntoContainer(
-                        AnimatedContentTransitionScope.SlideDirection.Start, tween(700)
+                        AnimatedContentTransitionScope.SlideDirection.Start, tween(500)
                     )
                 },
                 popExitTransition = {
                     return@composable slideOutOfContainer(
-                        AnimatedContentTransitionScope.SlideDirection.End, tween(700)
+                        AnimatedContentTransitionScope.SlideDirection.End, tween(500)
+                    )
+                },
+                popEnterTransition = {
+                    return@composable slideIntoContainer(
+                        AnimatedContentTransitionScope.SlideDirection.End, tween(500)
                     )
                 },
                 arguments = listOf(
@@ -116,12 +126,17 @@ class MainActivity : ComponentActivity() {
                 route = Screen.CarTrimScreen.route + "/{modelName}/{modelId}/{year}",
                 enterTransition = {
                     return@composable slideIntoContainer(
-                        AnimatedContentTransitionScope.SlideDirection.Start, tween(700)
+                        AnimatedContentTransitionScope.SlideDirection.Start, tween(500)
                     )
                 },
                 popExitTransition = {
                     return@composable slideOutOfContainer(
-                        AnimatedContentTransitionScope.SlideDirection.End, tween(700)
+                        AnimatedContentTransitionScope.SlideDirection.End, tween(500)
+                    )
+                },
+                popEnterTransition = {
+                    return@composable slideIntoContainer(
+                        AnimatedContentTransitionScope.SlideDirection.End, tween(500)
                     )
                 },
                 arguments = listOf(
