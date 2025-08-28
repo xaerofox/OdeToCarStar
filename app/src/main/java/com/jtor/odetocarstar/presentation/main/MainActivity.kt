@@ -10,7 +10,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHost
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -34,89 +33,27 @@ class MainActivity : ComponentActivity() {
                 Surface(color = MaterialTheme.colorScheme.background) {
                     val navController = rememberNavController()
                     NavHost(navController = navController, startDestination = Screen.CarMakeScreen.route) {
-                        exampleGraph(navController)
+                        myNavGraph(navController)
                     }
-//                    NavHost(
-//                        navController = navController,
-//                        startDestination = Screen.CarMakeScreen.route
-//                    ) {
-//                        composable(route = Screen.CarMakeScreen.route) {
-//                            CarMakeScreen(navController)
-//                        }
-//
-//                        composable(route = Screen.CarYearScreen.route + "/{makeId}",
-//                            arguments = listOf(
-//                                navArgument("makeId") {
-//                                    type = NavType.StringType
-//                                    defaultValue = ""
-//                                }
-//                            )
-//                        ) { entry ->
-//                            CarYearScreen(make = entry.arguments?.getString("makeId")!!,
-//                                navController = navController)
-//                        }
-//
-//                        composable(route = Screen.CarModelScreen.route + "/{make}/{year}",
-//                            arguments = listOf(
-//                                navArgument("make") {
-//                                    type = NavType.StringType
-//                                    defaultValue = ""
-//                                },
-//                                navArgument("year") {
-//                                    type = NavType.StringType
-//                                    defaultValue = "2020"
-//                                }
-//                            )
-//                        ) {
-//                            CarModelScreen(
-//                                navController = navController,
-//                                make = it.arguments?.getString("make")!!,
-//                                year = it.arguments?.getString("year")!!,
-//                            )
-//                        }
-//
-//                        composable(route = Screen.CarTrimScreen.route + "/{modelName}/{modelId}/{year}",
-//                            arguments = listOf(
-//                                navArgument("modelName") {
-//                                    type = NavType.StringType
-//                                    defaultValue = ""
-//                                },
-//                                navArgument("modelId") {
-//                                    type = NavType.StringType
-//                                    defaultValue = ""
-//                                },
-//                                navArgument("year") {
-//                                    type = NavType.StringType
-//                                    defaultValue = ""
-//                                }
-//                            )
-//                        ) {
-//                            CarTrimScreen(
-//                                navController = navController,
-//                                modelName = it.arguments?.getString("modelName")!!,
-//                                year = it.arguments?.getString("year")!!,
-//                                modelId = it.arguments?.getString("modelId")!!
-//                            )
-//                        }
-//                    }
                 }
             }
         }
     }
 
-    fun NavGraphBuilder.exampleGraph(navController: NavController) {
+    fun NavGraphBuilder.myNavGraph(navController: NavController) {
         navigation(
             startDestination = "CarMakeScreen", route = Screen.CarMakeScreen.route
         ) {
-            composable("CarMakeScreen",
+            composable(
+                "CarMakeScreen",
                 enterTransition = {
                     return@composable fadeIn(tween(1000))
-                                  },
+                },
                 exitTransition = {
                     return@composable slideOutOfContainer(
                         AnimatedContentTransitionScope.SlideDirection.Start, tween(700)
                     )
-                } ,
+                },
                 popEnterTransition = {
                     return@composable slideIntoContainer(
                         AnimatedContentTransitionScope.SlideDirection.End, tween(700)
@@ -125,8 +62,9 @@ class MainActivity : ComponentActivity() {
             ) {
                 CarMakeScreen(navController)
             }
+
             composable(
-                Screen.CarYearScreen.route  + "/{makeId}",
+                Screen.CarYearScreen.route + "/{makeId}",
                 enterTransition = {
                     return@composable slideIntoContainer(
                         AnimatedContentTransitionScope.SlideDirection.Start, tween(700)
@@ -138,8 +76,75 @@ class MainActivity : ComponentActivity() {
                     )
                 },
             ) { entry ->
-                CarYearScreen(make = entry.arguments?.getString("makeId")!!,
-                    navController = navController)
+                CarYearScreen(
+                    make = entry.arguments?.getString("makeId")!!,
+                    navController = navController
+                )
+            }
+
+            composable(
+                route = Screen.CarModelScreen.route + "/{make}/{year}",
+                enterTransition = {
+                    return@composable slideIntoContainer(
+                        AnimatedContentTransitionScope.SlideDirection.Start, tween(700)
+                    )
+                },
+                popExitTransition = {
+                    return@composable slideOutOfContainer(
+                        AnimatedContentTransitionScope.SlideDirection.End, tween(700)
+                    )
+                },
+                arguments = listOf(
+                    navArgument("make") {
+                        type = NavType.StringType
+                        defaultValue = ""
+                    },
+                    navArgument("year") {
+                        type = NavType.StringType
+                        defaultValue = "2020"
+                    }
+                )
+            ) {
+                CarModelScreen(
+                    navController = navController,
+                    make = it.arguments?.getString("make")!!,
+                    year = it.arguments?.getString("year")!!,
+                )
+            }
+
+            composable(
+                route = Screen.CarTrimScreen.route + "/{modelName}/{modelId}/{year}",
+                enterTransition = {
+                    return@composable slideIntoContainer(
+                        AnimatedContentTransitionScope.SlideDirection.Start, tween(700)
+                    )
+                },
+                popExitTransition = {
+                    return@composable slideOutOfContainer(
+                        AnimatedContentTransitionScope.SlideDirection.End, tween(700)
+                    )
+                },
+                arguments = listOf(
+                    navArgument("modelName") {
+                        type = NavType.StringType
+                        defaultValue = ""
+                    },
+                    navArgument("modelId") {
+                        type = NavType.StringType
+                        defaultValue = ""
+                    },
+                    navArgument("year") {
+                        type = NavType.StringType
+                        defaultValue = ""
+                    }
+                )
+            ) {
+                CarTrimScreen(
+                    navController = navController,
+                    modelName = it.arguments?.getString("modelName")!!,
+                    year = it.arguments?.getString("year")!!,
+                    modelId = it.arguments?.getString("modelId")!!
+                )
             }
         }
     }
