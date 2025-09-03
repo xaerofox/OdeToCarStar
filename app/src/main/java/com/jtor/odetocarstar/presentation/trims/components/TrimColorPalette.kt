@@ -43,7 +43,7 @@ fun TrimColorPalette(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 6.dp),
-            shape = RoundedCornerShape(14.dp),
+            shape = RoundedCornerShape(10.dp),
             colors = CardDefaults.cardColors(
                 containerColor = MaterialTheme.colorScheme.primaryContainer
             )

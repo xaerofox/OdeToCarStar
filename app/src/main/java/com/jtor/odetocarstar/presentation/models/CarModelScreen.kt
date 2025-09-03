@@ -85,7 +85,8 @@ fun CarModelScreen(
                                     year
                                 )
                             )
-                        })
+                        }
+                    )
                 }
             }
 
@@ -103,6 +104,18 @@ fun CarModelScreen(
 
             if (state.isLoading) {
                 CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+            }
+
+            if (state.models.isEmpty() && !state.isLoading) {
+                Text(
+                    text = "No models are available",
+                    color = Color.Yellow,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 20.dp)
+                        .align(Alignment.Center)
+                )
             }
         }
     }
