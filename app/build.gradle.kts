@@ -12,14 +12,14 @@ plugins {
 
 android {
     namespace = "com.jtor.odetocarstar"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.jtor.odetocarstar"
         minSdk = 28
         targetSdk = 35
         versionCode = 1
-        versionName = "1.0"
+        versionName = "0.0.1-" + getVersionHash()
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -120,3 +120,21 @@ dependencies {
     debugImplementation(libs.compose.ui.tooling)
     debugImplementation(libs.compose.ui.test.manifest)
 }
+
+fun getVersionHash(): String =
+    runCatching {
+        val process = ProcessBuilder("git", "rev-parse", "--short", "HEAD")
+            .redirectErrorStream(true)
+            .start()
+
+        val output = process.inputStream.bufferedReader().use { it.readText() }
+        val exitCode = process.waitFor()
+
+        if (exitCode == 0) {
+            output.trim()
+        } else {
+            throw IllegalStateException("Git command failed with exit code $exitCode")
+        }
+    }.onFailure { e ->
+        println("Could not get git commit hash. Reason: ${e.message}")
+    }.getOrDefault("")
