@@ -67,6 +67,7 @@ dependencies {
     implementation(platform(libs.compose.bom))
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.junit.ktx)
 
     //Hilt
     ksp(libs.hilt.android.complier)
@@ -99,6 +100,7 @@ dependencies {
     testImplementation(libs.truth)
     testImplementation(libs.mockwebserver)
     testImplementation(libs.mockk)
+    testImplementation(libs.robolectric)
 
     androidTestImplementation(libs.hilt.android.testing)
     kspAndroidTest(libs.hilt.android.compiler.v237)
