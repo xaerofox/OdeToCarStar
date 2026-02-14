@@ -16,6 +16,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
+import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -23,18 +24,35 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.jtor.odetocarstar.data.model.CarMake
 import com.jtor.odetocarstar.presentation.makes.components.MakeListItem
 import com.jtor.odetocarstar.presentation.util.route.Screen
+import com.jtor.odetocarstar.presentation.util.theme.OdeToCarStarTheme
 
-@OptIn(ExperimentalMaterial3Api::class)
+
 @Composable
 fun CarMakeScreen(
     navController: NavController,
     viewModel: CarMakeViewModel = hiltViewModel()
+) {
+    CarMakeScreen(
+        onMakeClick = { make ->
+            navController.navigate(Screen.CarYearScreen.withArgs(make.name))
+        },
+        state = viewModel.state.value
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun CarMakeScreen(
+    onMakeClick: (CarMake) -> Unit,
+    state: MakeListState
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
 
@@ -53,7 +71,6 @@ fun CarMakeScreen(
         },
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
     ) {
-        val state = viewModel.state.value
         Box(
             modifier = Modifier
                 .padding(it)
@@ -61,10 +78,7 @@ fun CarMakeScreen(
         ) {
             LazyVerticalGrid(columns = GridCells.Fixed(2)) {
                 items(state.makes) { make ->
-                    MakeListItem(make = make, onItemClick = {
-                        navController.navigate(Screen.CarYearScreen.withArgs(make.name))
-                    })
-
+                    MakeListItem(make = make, onItemClick = onMakeClick)
                 }
             }
 
@@ -98,5 +112,23 @@ fun CarMakeScreen(
             }
         }
     }
+}
 
+@Preview(showSystemUi = true)
+@Composable
+fun CarMakeScreenPreview() {
+    val carMake = CarMake(id = 0, name = "Ford")
+
+    OdeToCarStarTheme(darkTheme = true) {
+        CarMakeScreen(
+            onMakeClick = {},
+            state = MakeListState(
+                makes = listOf(
+                    carMake,
+                    carMake.copy(id = 1, name = "Honda"),
+                    carMake.copy(id = 2, name = "Nissan"),
+                )
+            )
+        )
+    }
 }

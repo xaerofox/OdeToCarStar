@@ -1,5 +1,6 @@
 package com.jtor.odetocarstar.presentation.makes.components
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -12,9 +13,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
+import com.jtor.odetocarstar.R
 import com.jtor.odetocarstar.data.model.CarMake
 import com.jtor.odetocarstar.presentation.util.Constants
 import com.jtor.odetocarstar.presentation.util.theme.OdeToCarStarTheme
@@ -31,6 +34,11 @@ fun MakeListItem(
             .padding(10.dp)
     ) {
         SubcomposeAsyncImage (
+            modifier = Modifier
+                .clip(RoundedCornerShape(10.dp))
+                .aspectRatio(100f/100f, true)
+                .background(customBackgroundSetup(make.name.lowercase()))
+                .padding(8.dp),
             model = findMakeLogo(make.name.lowercase()),
             contentDescription = "${make.name} logo",
             loading = {
@@ -39,11 +47,16 @@ fun MakeListItem(
                         .padding(64.dp)
                 )
             },
-            modifier = Modifier
-                .clip(RoundedCornerShape(10.dp))
-                .aspectRatio(100f/100f, true)
-                .background(customBackgroundSetup(make.name.lowercase()))
-                .padding(8.dp)
+            error = {
+                Image(
+                    modifier = Modifier
+                        .aspectRatio(100f/100f, true)
+                        .background(customBackgroundSetup(make.name.lowercase()))
+                        .padding(8.dp),
+                    painter = painterResource(id = R.drawable.baseline_directions_car_filled_24),
+                    contentDescription = "Fallback image",
+                )
+            }
         )
     }
 }
