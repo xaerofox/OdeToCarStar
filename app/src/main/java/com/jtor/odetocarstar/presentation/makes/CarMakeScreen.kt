@@ -16,7 +16,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
-import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -127,6 +126,7 @@ fun CarMakeScreenPreview() {
                     carMake,
                     carMake.copy(id = 1, name = "Honda"),
                     carMake.copy(id = 2, name = "Nissan"),
+                    carMake.copy(id = 3, name = "BMW"),
                 )
             )
         )

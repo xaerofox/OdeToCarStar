@@ -51,7 +51,7 @@ fun MakeListItem(
                 Image(
                     modifier = Modifier
                         .aspectRatio(100f/100f, true)
-                        .background(customBackgroundSetup(make.name.lowercase()))
+                        .background(Color.White)
                         .padding(8.dp),
                     painter = painterResource(id = R.drawable.baseline_directions_car_filled_24),
                     contentDescription = "Fallback image",
