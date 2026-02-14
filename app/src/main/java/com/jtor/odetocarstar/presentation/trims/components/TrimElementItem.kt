@@ -23,10 +23,7 @@ fun TrimElementItem(name: String, value: String?) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(
-                horizontal = 12.dp,
-                vertical = 4.dp
-            )
+            .padding(8.dp)
             .drawBehind {
                 val borderSize = 2.dp.toPx()
                 drawLine(
