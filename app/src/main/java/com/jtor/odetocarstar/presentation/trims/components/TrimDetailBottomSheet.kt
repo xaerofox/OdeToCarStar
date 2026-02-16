@@ -52,7 +52,6 @@ fun TrimDetailBottomSheet(
                 .fillMaxWidth()
                 .navigationBarsPadding()
                 .padding(4.dp)
-                .verticalScroll(rememberScrollState())
         ) {
             if (trimDetailState!!.isLoading) {
                 CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
