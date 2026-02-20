@@ -22,7 +22,7 @@ class CarMakeViewModelTest {
 
     @Before
     fun setUp() {
-        getMakesUseCase = mockk()
+        getMakesUseCase = mockk(relaxed = true)
         viewModel = CarMakeViewModel(getMakesUseCase)
     }
 
