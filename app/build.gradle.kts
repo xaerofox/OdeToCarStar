@@ -4,7 +4,7 @@ import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.android.kotlin)
+    // Removed the Kotlin plugin as it is now built-in in AGP 9.0+
     alias(libs.plugins.android.ksp)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.dagger.hilt)
@@ -12,7 +12,7 @@ plugins {
 
 android {
     namespace = "com.jtor.odetocarstar"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.jtor.odetocarstar"
@@ -41,9 +41,6 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-    kotlinOptions {
-        jvmTarget = "11"
-    }
     buildFeatures {
         compose = true
         buildConfig = true
@@ -65,6 +62,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.junit.ktx)
+    implementation(libs.androidx.material.icons.extended)
 
     //Hilt
     ksp(libs.hilt.android.complier)
