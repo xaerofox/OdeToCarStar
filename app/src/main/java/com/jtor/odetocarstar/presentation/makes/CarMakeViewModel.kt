@@ -24,7 +24,7 @@ class CarMakeViewModel @Inject constructor(
         getMakes()
     }
 
-    private fun getMakes() {
+    fun getMakes() {
         getMakesUseCase().onEach { result ->
             when (result) {
                 is Resource.Error -> {

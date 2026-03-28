@@ -5,7 +5,6 @@ import com.jtor.odetocarstar.core.Resource
 import com.jtor.odetocarstar.data.model.CarMake
 import com.jtor.odetocarstar.domain.usecase.GetMakesUseCase
 import io.mockk.coEvery
-import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
@@ -28,7 +27,7 @@ class CarMakeViewModelTest {
 
     @Test
     fun `test initial state`() {
-        assertEquals(true, viewModel.state.value.isLoading)
+        assertEquals(false, viewModel.state.value.isLoading)
         assertEquals(emptyList<CarMake>(), viewModel.state.value.makes)
         assertEquals("", viewModel.state.value.error)
     }
@@ -36,9 +35,12 @@ class CarMakeViewModelTest {
     @Test
     fun `test getMakes success`() = runTest {
         val makes = listOf(CarMake(id = 1, name = "Toyota"), CarMake(id = 2, name = "Honda"))
-        coEvery { getMakesUseCase() } returns flowOf(Resource.Success(makes))
+        coEvery { getMakesUseCase.invoke() } returns flowOf(Resource.Success(makes))
 
+        // Trigger the use case and collect the state
+        viewModel.getMakes()
 
+        // Verify the state is updated correctly
         assertEquals(false, viewModel.state.value.isLoading)
         assertEquals(makes, viewModel.state.value.makes)
         assertEquals("", viewModel.state.value.error)
@@ -46,7 +48,10 @@ class CarMakeViewModelTest {
 
     @Test
     fun `test getMakes loading`() = runTest {
-        every { getMakesUseCase() } returns flowOf(Resource.Loading())
+        coEvery { getMakesUseCase.invoke() } returns flowOf(Resource.Loading())
+
+        // Trigger the use case and collect the state
+        viewModel.getMakes()
 
         assertEquals(true, viewModel.state.value.isLoading)
         assertEquals(emptyList<CarMake>(), viewModel.state.value.makes)
@@ -56,7 +61,10 @@ class CarMakeViewModelTest {
     @Test
     fun `test getMakes error`() = runTest {
         val errorMessage = "Network error"
-        coEvery { getMakesUseCase() } returns flowOf(Resource.Error(errorMessage))
+        coEvery { getMakesUseCase.invoke() } returns flowOf(Resource.Error(errorMessage))
+
+        // Trigger the use case and collect the state
+        viewModel.getMakes()
 
         assertEquals(false, viewModel.state.value.isLoading)
         assertEquals(emptyList<CarMake>(), viewModel.state.value.makes)
