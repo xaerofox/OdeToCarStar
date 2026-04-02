@@ -27,19 +27,22 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.jtor.odetocarstar.data.model.CarModel
 import com.jtor.odetocarstar.presentation.models.components.ModelListItem
 import com.jtor.odetocarstar.presentation.util.route.Screen
+import com.jtor.odetocarstar.presentation.util.theme.OdeToCarStarTheme
 
-@OptIn(ExperimentalMaterial3Api::class)
+
 @Composable
 fun CarModelScreen(
-    navController: NavController? = null,
+    navController: NavController,
     viewModel: CarModelViewModel = hiltViewModel(),
     make: String,
-    year: String
+    year: String,
 ) {
     val rememberYear by remember { mutableIntStateOf(year.toInt()) }
     val rememberMake by remember { mutableStateOf(make) }
@@ -48,6 +51,32 @@ fun CarModelScreen(
         viewModel.getModels(year.toInt(), make)
     }
 
+    CarModelScreen(
+        onBackClick = { navController.popBackStack() },
+        onModelClick = { model ->
+            navController.navigate(
+                Screen.CarTrimScreen.withArgs(
+                    model.name,
+                    model.id.toString(),
+                    year
+                )
+            )
+        },
+        state = viewModel.state.value,
+        make = rememberMake,
+        year = rememberYear
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun CarModelScreen(
+    onBackClick: () -> Unit,
+    onModelClick: (CarModel) -> Unit,
+    state: ModelListState,
+    make: String,
+    year: Int
+) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -59,14 +88,13 @@ fun CarModelScreen(
                     titleContentColor = MaterialTheme.colorScheme.primary
                 ),
                 navigationIcon = {
-                    IconButton(onClick = { navController?.popBackStack() }) {
+                    IconButton(onClick = onBackClick) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null)
                     }
                 }
             )
         }
     ) {
-        val state = viewModel.state.value
         Box(
             modifier = Modifier
                 .padding(it)
@@ -77,15 +105,7 @@ fun CarModelScreen(
                     ModelListItem(
                         make = make,
                         model = model,
-                        onItemClick = {
-                            navController?.navigate(
-                                Screen.CarTrimScreen.withArgs(
-                                    model.name,
-                                    model.id.toString(),
-                                    year
-                                )
-                            )
-                        }
+                        onItemClick = onModelClick,
                     )
                 }
             }
@@ -119,5 +139,28 @@ fun CarModelScreen(
             }
         }
     }
+}
 
+@Preview(showSystemUi = true)
+@Composable
+fun CarModelScreenPreview() {
+    val carModel = CarModel(
+        id = 1,
+        makeId = 1,
+        name = "Scooter"
+    )
+
+    OdeToCarStarTheme(darkTheme = true) {
+        CarModelScreen(
+            make = "FORD",
+            year = 2026,
+            onBackClick = { },
+            onModelClick = { },
+            state = ModelListState(
+                models = listOf(
+                    carModel
+                )
+            )
+        )
+    }
 }
