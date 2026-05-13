@@ -1,46 +1,37 @@
 package com.jtor.odetocarstar.presentation.makes
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jtor.odetocarstar.core.Resource
 import com.jtor.odetocarstar.data.model.CarMake
-import com.jtor.odetocarstar.domain.usecase.GetMakesUseCase
+import com.jtor.odetocarstar.data.repository.CarRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class CarMakeViewModel @Inject constructor(
-    private val getMakesUseCase: GetMakesUseCase
+    private val repository: CarRepository
 ) : ViewModel() {
 
-    private val _state = mutableStateOf(MakeListState())
-    val state: State<MakeListState> = _state
+    private val _state = MutableStateFlow(MakeListState())
+    val state = _state.asStateFlow()
 
     init {
         getMakes()
     }
 
     fun getMakes() {
-        getMakesUseCase().onEach { result ->
-            when (result) {
-                is Resource.Error -> {
-                    _state.value =
-                        MakeListState(error = result.message ?: "An unexpected error has occurred")
-                }
-
-                is Resource.Loading -> {
-                    _state.value = MakeListState(isLoading = true)
-                }
-
-                is Resource.Success -> {
-                    _state.value = MakeListState(makes = result.data ?: emptyList())
-                }
+        viewModelScope.launch {
+            _state.value = MakeListState(isLoading = true)
+            try {
+                val makes = repository.getMakes(2015, "id")
+                _state.value = MakeListState(isLoading = false, makes = makes)
+            } catch (e: Exception) {
+                _state.value = MakeListState(isLoading = false, error = e.message ?: "An unexpected error has occurred")
             }
-        }.launchIn(viewModelScope)
+        }
     }
 }
 

@@ -1,62 +1,47 @@
 package com.jtor.odetocarstar.presentation.trims
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jtor.odetocarstar.core.Resource
 import com.jtor.odetocarstar.data.model.CarTrim
 import com.jtor.odetocarstar.data.model.CarTrimDetail
 import com.jtor.odetocarstar.data.repository.CarRepository
-import com.jtor.odetocarstar.domain.usecase.GetTrimsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class CarTrimViewModel @Inject constructor(
-    private val getTrimsUseCase: GetTrimsUseCase,
     private val repository: CarRepository
 ) : ViewModel() {
 
-    private val _state = mutableStateOf(TrimListState())
-    val state: State<TrimListState> = _state
+    private val _state = MutableStateFlow(TrimListState())
+    val state = _state.asStateFlow()
 
     private val _detailState = MutableStateFlow(TrimDetailState())
     val detailState = _detailState.asStateFlow()
 
     fun getTrims(year: Int, modelId: Int) {
-        getTrimsUseCase(year, modelId).onEach { result ->
-            when (result) {
-                is Resource.Error -> {
-                    _state.value =
-                        TrimListState(error = result.message ?: "An unexpected error occurred")
-                }
-
-                is Resource.Loading -> {
-                    _state.value = TrimListState(isLoading = true)
-                }
-
-                is Resource.Success -> {
-                    _state.value = TrimListState(trims = result.data ?: emptyList())
-                }
+        viewModelScope.launch {
+            _state.value = TrimListState(isLoading = true)
+            try {
+                val trims = repository.getTrims(year, modelId)
+                _state.value = TrimListState(isLoading = false, trims = trims)
+            } catch (e: Exception) {
+                _state.value = TrimListState(isLoading = false, error = e.message ?: "An unexpected error occurred")
             }
-        }.launchIn(viewModelScope)
+        }
     }
 
     fun getTrimDetail(id: Int) {
-        _detailState.value = TrimDetailState(isLoading = true)
         viewModelScope.launch {
-            runCatching {
-                repository.getTrimDetail(id)
-            }.onSuccess {
-                _detailState.value = TrimDetailState(detail = it)
-            }.onFailure {
-                _detailState.value = TrimDetailState(error = it.message ?: "YO! SOMETHING WENT WRONG!")
+            _detailState.value = TrimDetailState(isLoading = true)
+            try {
+                val detail = repository.getTrimDetail(id)
+                _detailState.value = TrimDetailState(isLoading = false, detail = detail)
+            } catch (e: Exception) {
+                _detailState.value = TrimDetailState(isLoading = false, error = e.message ?: "An unexpected error occurred")
             }
         }
     }

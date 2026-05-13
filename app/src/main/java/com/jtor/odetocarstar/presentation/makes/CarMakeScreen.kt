@@ -32,6 +32,7 @@ import com.jtor.odetocarstar.data.model.CarMake
 import com.jtor.odetocarstar.presentation.makes.components.MakeListItem
 import com.jtor.odetocarstar.presentation.util.route.Screen
 import com.jtor.odetocarstar.presentation.util.theme.OdeToCarStarTheme
+import androidx.compose.runtime.collectAsState
 
 
 @Composable
@@ -43,7 +44,7 @@ fun CarMakeScreen(
         onMakeClick = { make ->
             navController.navigate(Screen.CarYearScreen.withArgs(make.name))
         },
-        state = viewModel.state.value
+        state = viewModel.state.collectAsState().value
     )
 }
 

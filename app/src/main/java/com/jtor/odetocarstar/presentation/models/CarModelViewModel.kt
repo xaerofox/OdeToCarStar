@@ -1,40 +1,33 @@
 package com.jtor.odetocarstar.presentation.models
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jtor.odetocarstar.core.Resource
 import com.jtor.odetocarstar.data.model.CarModel
-import com.jtor.odetocarstar.domain.usecase.GetModelsUseCase
+import com.jtor.odetocarstar.data.repository.CarRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class CarModelViewModel @Inject constructor(
-    private val getModelsUseCase: GetModelsUseCase
+    private val repository: CarRepository
 ): ViewModel() {
 
-    private val _state = mutableStateOf(ModelListState())
-    val state: State<ModelListState> = _state
+    private val _state = MutableStateFlow(ModelListState())
+    val state = _state.asStateFlow()
 
     fun getModels(year: Int, make: String) {
-        getModelsUseCase(year, make).onEach { result ->
-            when(result) {
-                is Resource.Error -> {
-                    _state.value =
-                        ModelListState(error = result.message ?: "An unexpected error occurred")
-                }
-                is Resource.Loading -> {
-                    _state.value = ModelListState(isLoading = true)
-                }
-                is Resource.Success -> {
-                    _state.value = ModelListState(models = result.data ?: emptyList())
-                }
+        viewModelScope.launch {
+            _state.value = ModelListState(isLoading = true)
+            try {
+                val models = repository.getModels(year, make)
+                _state.value = ModelListState(isLoading = false, models = models)
+            } catch (e: Exception) {
+                _state.value = ModelListState(isLoading = false, error = e.message ?: "An unexpected error occurred")
             }
-        }.launchIn(viewModelScope)
+        }
     }
 }
 

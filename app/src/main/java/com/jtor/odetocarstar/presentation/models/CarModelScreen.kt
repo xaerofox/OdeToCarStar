@@ -35,6 +35,7 @@ import com.jtor.odetocarstar.data.model.CarModel
 import com.jtor.odetocarstar.presentation.models.components.ModelListItem
 import com.jtor.odetocarstar.presentation.util.route.Screen
 import com.jtor.odetocarstar.presentation.util.theme.OdeToCarStarTheme
+import androidx.compose.runtime.collectAsState
 
 
 @Composable
@@ -62,7 +63,7 @@ fun CarModelScreen(
                 )
             )
         },
-        state = viewModel.state.value,
+        state = viewModel.state.collectAsState().value,
         make = rememberMake,
         year = rememberYear
     )

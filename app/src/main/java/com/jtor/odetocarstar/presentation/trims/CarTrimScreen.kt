@@ -46,7 +46,7 @@ fun CarTrimScreen(
 ) {
     val rememberedYear by remember { mutableIntStateOf(year.toInt()) }
     val rememberedModelId by remember { mutableIntStateOf(modelId.toInt()) }
-    val state: TrimListState by viewModel.state
+    val state by viewModel.state.collectAsState()
     val trimDetailState by viewModel.detailState.collectAsState()
 
     LaunchedEffect(rememberedYear, rememberedModelId) {
