@@ -4,10 +4,14 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.SharedTransitionLayout
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
+import androidx.compose.foundation.layout.Box
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
@@ -19,6 +23,8 @@ import androidx.navigation.navigation
 import com.jtor.odetocarstar.presentation.makes.CarMakeScreen
 import com.jtor.odetocarstar.presentation.models.CarModelScreen
 import com.jtor.odetocarstar.presentation.trims.CarTrimScreen
+import com.jtor.odetocarstar.presentation.util.LocalSharedTransitionContext
+import com.jtor.odetocarstar.presentation.util.SharedTransitionContext
 import com.jtor.odetocarstar.presentation.util.route.Screen
 import com.jtor.odetocarstar.presentation.util.theme.OdeToCarStarTheme
 import com.jtor.odetocarstar.presentation.year.CarYearScreen
@@ -32,15 +38,20 @@ class MainActivity : ComponentActivity() {
             OdeToCarStarTheme {
                 Surface(color = MaterialTheme.colorScheme.background) {
                     val navController = rememberNavController()
-                    NavHost(navController = navController, startDestination = Screen.CarMakeScreen.route) {
-                        myNavGraph(navController)
+                    SharedTransitionLayout {
+                        NavHost(
+                            navController = navController,
+                            startDestination = Screen.CarMakeScreen.route
+                        ) {
+                            myNavGraph(navController,this@SharedTransitionLayout)
+                        }
                     }
                 }
             }
         }
     }
 
-    fun NavGraphBuilder.myNavGraph(navController: NavController) {
+    fun NavGraphBuilder.myNavGraph(navController: NavController, sharedTransitionScope: SharedTransitionScope) {
         navigation(
             startDestination = "CarMakeScreen", route = Screen.CarMakeScreen.route
         ) {
@@ -60,7 +71,14 @@ class MainActivity : ComponentActivity() {
                     )
                 }
             ) {
-                CarMakeScreen(navController)
+                val context = SharedTransitionContext(
+                    sharedTransitionScope = sharedTransitionScope,
+                    animatedVisibilityScope = this
+                )
+
+                CompositionLocalProvider(LocalSharedTransitionContext provides context) {
+                    CarMakeScreen(navController)
+                }
             }
             
             composable(
@@ -81,10 +99,17 @@ class MainActivity : ComponentActivity() {
                     )
                 }
             ) { entry ->
-                CarYearScreen(
-                    make = entry.arguments?.getString("makeId")!!,
-                    navController = navController
+                val context = SharedTransitionContext(
+                    sharedTransitionScope = sharedTransitionScope,
+                    animatedVisibilityScope = this
                 )
+
+                CompositionLocalProvider(LocalSharedTransitionContext provides context) {
+                    CarYearScreen(
+                        make = entry.arguments?.getString("makeId")!!,
+                        navController = navController
+                    )
+                }
             }
 
             composable(

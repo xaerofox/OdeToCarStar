@@ -24,6 +24,7 @@ import com.jtor.odetocarstar.presentation.util.theme.OdeToCarStarTheme
 
 @Composable
 fun MakeListItem(
+    modifier: Modifier = Modifier,
     make: CarMake,
     onItemClick: (CarMake) -> Unit
 ) {
@@ -34,7 +35,7 @@ fun MakeListItem(
             .padding(10.dp)
     ) {
         SubcomposeAsyncImage (
-            modifier = Modifier
+            modifier = modifier
                 .clip(RoundedCornerShape(10.dp))
                 .aspectRatio(100f/100f, true)
                 .background(customBackgroundSetup(make.name.lowercase()))
@@ -76,6 +77,8 @@ fun findMakeLogo(make: String): String {
 @Composable
 fun MakeListItemPreview() {
     OdeToCarStarTheme {
-        MakeListItem(make = CarMake(0, "Ford"), onItemClick = {})
+        MakeListItem(
+            make = CarMake(0, "Ford"), onItemClick = {},
+        )
     }
 }

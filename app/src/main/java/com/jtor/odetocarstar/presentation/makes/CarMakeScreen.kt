@@ -18,6 +18,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,9 +31,9 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.jtor.odetocarstar.data.model.CarMake
 import com.jtor.odetocarstar.presentation.makes.components.MakeListItem
+import com.jtor.odetocarstar.presentation.util.LocalSharedTransitionContext
 import com.jtor.odetocarstar.presentation.util.route.Screen
 import com.jtor.odetocarstar.presentation.util.theme.OdeToCarStarTheme
-import androidx.compose.runtime.collectAsState
 
 
 @Composable
@@ -55,6 +56,7 @@ private fun CarMakeScreen(
     state: MakeListState
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
+    val transitionContext = LocalSharedTransitionContext.current
 
     Scaffold(
         topBar = {
@@ -78,7 +80,19 @@ private fun CarMakeScreen(
         ) {
             LazyVerticalGrid(columns = GridCells.Fixed(2)) {
                 items(state.makes) { make ->
-                    MakeListItem(make = make, onItemClick = onMakeClick)
+                    if(transitionContext != null) {
+                        with(transitionContext.sharedTransitionScope) {
+                            MakeListItem(
+                                modifier = Modifier
+                                    .sharedElement(
+                                        sharedContentState = rememberSharedContentState(key = "image-${make.name.lowercase()}"),
+                                        animatedVisibilityScope = transitionContext.animatedVisibilityScope
+                                    ),
+                                make = make,
+                                onItemClick = onMakeClick,
+                            )
+                        }
+                    }
                 }
             }
 
