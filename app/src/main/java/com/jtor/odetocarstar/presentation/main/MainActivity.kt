@@ -57,19 +57,6 @@ class MainActivity : ComponentActivity() {
         ) {
             composable(
                 "CarMakeScreen",
-                enterTransition = {
-                    return@composable fadeIn(tween(1000))
-                },
-                exitTransition = {
-                    return@composable slideOutOfContainer(
-                        AnimatedContentTransitionScope.SlideDirection.Start, tween(500)
-                    )
-                },
-                popEnterTransition = {
-                    return@composable slideIntoContainer(
-                        AnimatedContentTransitionScope.SlideDirection.End, tween(500)
-                    )
-                }
             ) {
                 val context = SharedTransitionContext(
                     sharedTransitionScope = sharedTransitionScope,
@@ -83,21 +70,6 @@ class MainActivity : ComponentActivity() {
             
             composable(
                 Screen.CarYearScreen.route + "/{makeId}",
-                enterTransition = {
-                    return@composable slideIntoContainer(
-                        AnimatedContentTransitionScope.SlideDirection.Start, tween(500)
-                    )
-                },
-                popExitTransition = {
-                    return@composable slideOutOfContainer(
-                        AnimatedContentTransitionScope.SlideDirection.End, tween(500)
-                    )
-                },
-                popEnterTransition = {
-                    return@composable slideIntoContainer(
-                        AnimatedContentTransitionScope.SlideDirection.End, tween(500)
-                    )
-                }
             ) { entry ->
                 val context = SharedTransitionContext(
                     sharedTransitionScope = sharedTransitionScope,
