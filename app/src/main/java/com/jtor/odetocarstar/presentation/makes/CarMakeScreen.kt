@@ -1,5 +1,6 @@
 package com.jtor.odetocarstar.presentation.makes
 
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -86,7 +87,13 @@ private fun CarMakeScreen(
                                 modifier = Modifier
                                     .sharedElement(
                                         sharedContentState = rememberSharedContentState(key = "image-${make.name.lowercase()}"),
-                                        animatedVisibilityScope = transitionContext.animatedVisibilityScope
+                                        animatedVisibilityScope = transitionContext.animatedVisibilityScope,
+                                        boundsTransform = { _, _ ->
+                                            spring(
+                                                dampingRatio = 0.8f,
+                                                stiffness = 380f
+                                            )
+                                        }
                                     ),
                                 make = make,
                                 onItemClick = onMakeClick,

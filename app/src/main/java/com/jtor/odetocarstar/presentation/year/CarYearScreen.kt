@@ -1,6 +1,7 @@
 package com.jtor.odetocarstar.presentation.year
 
 import androidx.compose.animation.SharedTransitionScope
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
@@ -78,7 +79,13 @@ fun CarYearScreen(
                             .padding(8.dp)
                             .sharedElement(
                                 sharedContentState = rememberSharedContentState(key = "image-${make.lowercase()}"),
-                                animatedVisibilityScope = transitionContext.animatedVisibilityScope
+                                animatedVisibilityScope = transitionContext.animatedVisibilityScope,
+                                boundsTransform = { _, _ ->
+                                    spring(
+                                        dampingRatio = 0.8f,
+                                        stiffness = 380f
+                                    )
+                                }
                             ),
                         model = findMakeLogo(make.lowercase()),
                         contentDescription = "$make logo",
