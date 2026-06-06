@@ -65,9 +65,9 @@ class CarTrimViewModelTest {
     @Test
     fun `test getTrimDetail success`() = runTest {
         val detail = FakeTestData.getCarTrimDetail()
-        coEvery { repository.getTrimDetail(any()) } returns detail
+        coEvery { repository.getTrimDetail(any(), any()) } returns detail
 
-        viewModel.getTrimDetail(1)
+        viewModel.getTrimDetail(1, 2024)
 
         assertEquals(false, viewModel.detailState.value.isLoading)
         assertEquals(detail, viewModel.detailState.value.detail)
@@ -77,9 +77,9 @@ class CarTrimViewModelTest {
     @Test
     fun `test getTrimDetail failure`() = runTest {
         val error = Exception("Network error")
-        coEvery { repository.getTrimDetail(any()) } throws error
+        coEvery { repository.getTrimDetail(any(), any()) } throws error
 
-        viewModel.getTrimDetail(1)
+        viewModel.getTrimDetail(1, 2024)
 
         assertEquals(false, viewModel.detailState.value.isLoading)
         assertEquals(null, viewModel.detailState.value.detail)

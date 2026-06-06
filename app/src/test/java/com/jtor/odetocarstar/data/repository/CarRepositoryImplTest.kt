@@ -1,5 +1,9 @@
 package com.jtor.odetocarstar.data.repository
 
+import com.jtor.odetocarstar.data.local.dao.CarMakeDao
+import com.jtor.odetocarstar.data.local.dao.CarModelDao
+import com.jtor.odetocarstar.data.local.dao.CarTrimDao
+import com.jtor.odetocarstar.data.local.dao.CarTrimDetailDao
 import com.jtor.odetocarstar.data.model.CarMake
 import com.jtor.odetocarstar.data.model.CarModel
 import com.jtor.odetocarstar.data.model.CarTrim
@@ -16,12 +20,20 @@ import org.junit.Test
 class CarRepositoryImplTest {
 
     private lateinit var carApi: CarApi
+    private lateinit var carMakeDao: CarMakeDao
+    private lateinit var carModelDao: CarModelDao
+    private lateinit var carTrimDao: CarTrimDao
+    private lateinit var carTrimDetailDao: CarTrimDetailDao
     private lateinit var carRepository: CarRepositoryImpl
 
     @Before
     fun setUp() {
         carApi = mockk()
-        carRepository = CarRepositoryImpl(carApi)
+        carMakeDao = mockk(relaxed = true)
+        carModelDao = mockk(relaxed = true)
+        carTrimDao = mockk(relaxed = true)
+        carTrimDetailDao = mockk(relaxed = true)
+        carRepository = CarRepositoryImpl(carApi, carMakeDao, carModelDao, carTrimDao, carTrimDetailDao)
     }
 
     @Test
@@ -30,16 +42,12 @@ class CarRepositoryImplTest {
         val year = 2020
         val sort = "asc"
         val expectedCarMakes = listOf(CarMake(id = 1, name = "Toyota"))
-        // Assuming your CollectionDto has a structure that can be directly used
-        // or has a property like 'data' or 'items' that holds the list.
-        // For this example, I'll assume CollectionDto has a 'data' property
-        // and a 'collection' property as seen in your shared file snippet.
-        // You might need to adjust this based on the actual CollectionDto structure.
+
+        coEvery { carMakeDao.getMakes(year) } returns emptyList()
         val apiResponse = CollectionDto(
-            collection = mockk(), // Mock or create a dummy Collection object if needed
+            collection = mockk(),
             data = expectedCarMakes
         )
-
         coEvery { carApi.getMakes(year, sort) } returns apiResponse
 
         // When
@@ -54,13 +62,14 @@ class CarRepositoryImplTest {
     fun `getMakes uses default year when year is null`() = runBlocking {
         // Given
         val sort = "asc"
-        val defaultYear = 2015 // As per your repository logic
+        val defaultYear = 2015
         val expectedCarMakes = listOf(CarMake(id = 1, name = "Honda"))
+
+        coEvery { carMakeDao.getMakes(defaultYear) } returns emptyList()
         val apiResponse = CollectionDto(
             collection = mockk(),
             data = expectedCarMakes
         )
-
         coEvery { carApi.getMakes(defaultYear, sort) } returns apiResponse
 
         // When
@@ -77,11 +86,12 @@ class CarRepositoryImplTest {
         val year = 2021
         val make = "Ford"
         val expectedCarModels = listOf(CarModel(id = 1, name = "Mustang", makeId = 1))
+
+        coEvery { carMakeDao.getMakes(2015) } returns emptyList()
         val apiResponse = CollectionDto(
             collection = mockk(),
             data = expectedCarModels
         )
-
         coEvery { carApi.getModels(year, make) } returns apiResponse
 
         // When
@@ -110,11 +120,12 @@ class CarRepositoryImplTest {
                 modified = "2023-01-01T00:00:00Z"
             )
         )
+
+        coEvery { carTrimDao.getTrims(year, modelId) } returns emptyList()
         val apiResponse = CollectionDto(
             collection = mockk(),
             data = expectedCarTrims
         )
-
         coEvery { carApi.getTrims(year, modelId) } returns apiResponse
 
         // When
@@ -129,10 +140,11 @@ class CarRepositoryImplTest {
     fun `getTrimDetail returns car trim detail on success`() = runBlocking {
         // Given
         val trimId = 100
+        val year = 2023
         val expectedTrimDetail = CarTrimDetail(
             id = 100,
             modelId = 10,
-            year = 2023,
+            year = year,
             name = "LX",
             description = "Luxury Edition",
             msrp = 35000,
@@ -146,16 +158,14 @@ class CarRepositoryImplTest {
             makeModel = null,
             modified = "2023-01-01T00:00:00Z"
         )
-        // For getTrimDetail, the API likely returns the CarTrimDetail object directly,
-        // not wrapped in CollectionDto, unless your API is structured that way.
-        // I'll assume it returns CarTrimDetail directly. If it's wrapped, adjust accordingly.
-        coEvery { carApi.getTrimDetail(trimId) } returns expectedTrimDetail
+        coEvery { carTrimDetailDao.getDetail(trimId, year) } returns null
+        coEvery { carApi.getTrimDetail(trimId, year) } returns expectedTrimDetail
 
         // When
-        val result = carRepository.getTrimDetail(trimId)
+        val result = carRepository.getTrimDetail(trimId, year)
 
         // Then
         assertEquals(expectedTrimDetail, result)
-        coVerify(exactly = 1) { carApi.getTrimDetail(trimId) }
+        coVerify(exactly = 1) { carApi.getTrimDetail(trimId, year) }
     }
 }
