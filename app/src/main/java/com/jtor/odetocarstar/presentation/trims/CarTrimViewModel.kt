@@ -34,11 +34,11 @@ class CarTrimViewModel @Inject constructor(
         }
     }
 
-    fun getTrimDetail(id: Int) {
+    fun getTrimDetail(id: Int, year: Int) {
         viewModelScope.launch {
             _detailState.value = TrimDetailState(isLoading = true)
             try {
-                val detail = repository.getTrimDetail(id)
+                val detail = repository.getTrimDetail(id, year)
                 _detailState.value = TrimDetailState(isLoading = false, detail = detail)
             } catch (e: Exception) {
                 _detailState.value = TrimDetailState(isLoading = false, error = e.message ?: "An unexpected error occurred")

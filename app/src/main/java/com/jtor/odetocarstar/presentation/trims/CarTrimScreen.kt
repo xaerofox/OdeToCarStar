@@ -102,7 +102,7 @@ fun CarTrimScreen(
                     LazyColumn(modifier = Modifier.fillMaxSize()) {
                         items(state.trims) { trim ->
                             TrimListItem(trim = trim) {
-                                viewModel.getTrimDetail(trim.id)
+                                viewModel.getTrimDetail(trim.id, rememberedYear)
                                 showSheet = true
                             }
                         }
