@@ -12,5 +12,5 @@ interface CarRepository {
 
     suspend fun getTrims(year: Int, modelId: Int) : List<CarTrim>
 
-    suspend fun getTrimDetail(id: Int) : CarTrimDetail
+    suspend fun getTrimDetail(id: Int, year: Int) : CarTrimDetail
 }

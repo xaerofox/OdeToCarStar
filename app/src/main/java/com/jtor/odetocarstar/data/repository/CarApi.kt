@@ -30,5 +30,8 @@ interface CarApi {
     ): CollectionDto<CarTrim>
 
     @GET("/api/trims/{id}")
-    suspend fun getTrimDetail(@Path("id") trimId: Int): CarTrimDetail
+    suspend fun getTrimDetail(
+        @Path("id") trimId: Int,
+        @Query("year") year: Int
+    ): CarTrimDetail
 }
