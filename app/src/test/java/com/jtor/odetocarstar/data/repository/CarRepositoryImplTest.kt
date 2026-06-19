@@ -5,15 +5,10 @@ import com.jtor.odetocarstar.data.local.dao.CarModelDao
 import com.jtor.odetocarstar.data.local.dao.CarTrimDao
 import com.jtor.odetocarstar.data.local.dao.CarTrimDetailDao
 import com.jtor.odetocarstar.data.local.entity.CarMakeEntity
-import com.jtor.odetocarstar.data.local.entity.CarModelEntity
-import com.jtor.odetocarstar.data.local.entity.CarTrimDetailEntity
-import com.jtor.odetocarstar.data.local.entity.CarTrimEntity
 import com.jtor.odetocarstar.data.model.CarMake
 import com.jtor.odetocarstar.data.model.CarModel
 import com.jtor.odetocarstar.data.model.CarTrim
 import com.jtor.odetocarstar.data.model.CarTrimDetail
-import com.jtor.odetocarstar.data.model.MakeModel
-import com.jtor.odetocarstar.data.model.Make
 import com.jtor.odetocarstar.data.remote.dto.CollectionDto
 import io.mockk.coEvery
 import io.mockk.coVerify
