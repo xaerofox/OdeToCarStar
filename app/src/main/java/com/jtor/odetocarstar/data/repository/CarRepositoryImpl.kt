@@ -42,7 +42,7 @@ class CarRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getModels(year: Int, make: String): List<CarModel> {
-        val makeId = findMakeIdByName(make)
+        val makeId = findMakeIdByName(make, year)
         if (makeId != null) {
             val cached = carModelDao.getModels(year, makeId)
             if (cached.isNotEmpty()) {
@@ -68,7 +68,7 @@ class CarRepositoryImpl @Inject constructor(
 
         val trims = api.getTrims(year, modelId).data
 
-        carTrimDao.insertTrims(trims.map { it.toEntity() })
+        carTrimDao.insertTrims(trims.map { it.toEntity(year) })
 
         return trims
     }
@@ -86,13 +86,20 @@ class CarRepositoryImpl @Inject constructor(
         return detail
     }
 
-    private suspend fun findMakeIdByName(make: String): Int? {
+    private suspend fun findMakeIdByName(make: String, year: Int): Int? {
         return try {
-            val makes = carMakeDao.getMakes(2015)
+            val makes = carMakeDao.getMakes(year)
             makes.firstOrNull { it.name.equals(make, ignoreCase = true) }?.id
         } catch (e: Exception) {
             null
         }
+    }
+
+    override suspend fun clearCache() {
+        carMakeDao.clearAll()
+        carModelDao.clearAll()
+        carTrimDao.clearAll()
+        carTrimDetailDao.clearAll()
     }
 }
 
@@ -120,10 +127,10 @@ fun CarModelEntity.toCarModel() = CarModel(
     name = this.name
 )
 
-fun CarTrim.toEntity() = CarTrimEntity(
+fun CarTrim.toEntity(year: Int) = CarTrimEntity(
     id = this.id,
     name = this.name,
-    year = this.year,
+    year = year,
     modelId = this.modelId,
     msrp = this.msrp,
     invoice = this.invoice,
