@@ -11,6 +11,6 @@ interface CarTrimDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTrims(trims: List<CarTrimEntity>)
 
-    @Query("DELETE FROM car_trims WHERE year = :year")
-    suspend fun clearByYear(year: Int)
+    @Query("DELETE FROM car_trims")
+    suspend fun clearAll()
 }

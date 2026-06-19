@@ -11,6 +11,6 @@ interface CarModelDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertModels(models: List<CarModelEntity>)
 
-    @Query("DELETE FROM car_models WHERE year = :year")
-    suspend fun clearByYear(year: Int)
+    @Query("DELETE FROM car_models")
+    suspend fun clearAll()
 }

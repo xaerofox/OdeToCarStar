@@ -10,4 +10,7 @@ interface CarTrimDetailDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertDetail(detail: CarTrimDetailEntity)
+
+    @Query("DELETE FROM car_trim_details")
+    suspend fun clearAll()
 }

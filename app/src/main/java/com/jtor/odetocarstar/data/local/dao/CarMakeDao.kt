@@ -11,6 +11,6 @@ interface CarMakeDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertMakes(makes: List<CarMakeEntity>)
 
-    @Query("DELETE FROM car_makes WHERE year = :year")
-    suspend fun clearByYear(year: Int)
+    @Query("DELETE FROM car_makes")
+    suspend fun clearAll()
 }
