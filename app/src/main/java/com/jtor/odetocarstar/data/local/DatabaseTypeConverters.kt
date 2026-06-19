@@ -13,9 +13,11 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import java.lang.reflect.Type
 
 class DatabaseTypeConverters {
-    private val moshi = Moshi.Builder()
-        .addLast(KotlinJsonAdapterFactory())
-        .build()
+    companion object {
+        private val moshi = Moshi.Builder()
+            .addLast(KotlinJsonAdapterFactory())
+            .build()
+    }
 
     @TypeConverter
     fun fromTrimBody(value: TrimBody?): String? {

@@ -24,7 +24,10 @@ object DatabaseModule {
             context.applicationContext,
             AppDatabase::class.java,
             "odetocarstar_database"
-        ).build()
+        )
+            .addMigrations(Migrations.MIGRATION_1_2)
+            .fallbackToDestructiveMigration()
+            .build()
     }
 
     @Provides

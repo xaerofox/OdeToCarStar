@@ -20,7 +20,7 @@ import com.jtor.odetocarstar.data.local.entity.CarTrimEntity
         CarTrimDetailEntity::class
     ],
     version = 1,
-    exportSchema = false
+    exportSchema = true
 )
 @TypeConverters(DatabaseTypeConverters::class)
 abstract class AppDatabase : RoomDatabase() {
@@ -28,4 +28,8 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun carModelDao(): CarModelDao
     abstract fun carTrimDao(): CarTrimDao
     abstract fun carTrimDetailDao(): CarTrimDetailDao
+
+    companion object {
+        const val DATABASE_VERSION = 1
+    }
 }
