@@ -63,6 +63,7 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.junit.ktx)
     implementation(libs.androidx.material.icons.extended)
+    implementation(libs.navigation.compose)
 
     //Hilt
     ksp(libs.hilt.android.complier)

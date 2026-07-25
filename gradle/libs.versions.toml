@@ -33,6 +33,7 @@ hilt = "2.59.2"
 runner = "1.7.0"
 truth = "1.4.5"
 junit-ktx = "1.3.0"
+navigation-compose-version = "2.9.8"
 
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity-compose" }
@@ -78,6 +79,7 @@ room-compiler = { group = "androidx.room", name = "room-compiler", version.ref =
 room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 truth = { module = "com.google.truth:truth", version.ref = "truth" }
 androidx-junit-ktx = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "junit-ktx" }
+navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation-compose-version" }
 
 [bundles]
 compose = ["compose-ui", "compose-ui-graphics", "compose-ui-preview", "compose-material3"]
