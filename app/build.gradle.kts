@@ -11,11 +11,11 @@ plugins {
 }
 
 android {
-    namespace = "com.jtor.odetocarstar"
+    namespace = "com.jtorr.odetocarstar"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.jtor.odetocarstar"
+        applicationId = "com.jtorr.odetocarstar"
         minSdk = 28
         targetSdk = 35
         versionCode = 1
