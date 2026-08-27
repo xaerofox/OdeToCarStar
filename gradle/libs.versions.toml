@@ -60,7 +60,7 @@ compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
 compose-material3 = { module = "androidx.compose.material3:material3" }
 converter-moshi = { module = "com.squareup.retrofit2:converter-moshi", version.ref = "converter-moshi" }
-core-ktx = { module = "androidx.test:core-ktx", version.ref = "androidx-core-ktx" }
+core-ktx = { module = "androidx.test:core-ktx", version.ref = "core" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
 hilt-android-compiler-v237 = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt-android-compiler" }
 hilt-android-complier = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
