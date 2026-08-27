@@ -8,9 +8,13 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
@@ -18,19 +22,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import coil.compose.SubcomposeAsyncImage
 import com.jtorr.odetocarstar.R
 import com.jtorr.odetocarstar.data.model.CarMake
-import com.jtorr.odetocarstar.presentation.util.Constants
 import com.jtorr.odetocarstar.presentation.util.theme.OdeToCarStarTheme
-
-// Velocity Design System Colors
-private val VelocityPrimaryAccent = Color(0xFF00DBE9) // Electric Blue
-private val VelocityDarkBg = Color(0xFF131314) // Midnight Carbon
-private val VelocityCardBg = Color(0xFF1E1E1E) // Slightly lighter dark for cards
-private val VelocityWhite = Color.White
+import com.jtorr.odetocarstar.presentation.util.theme.Spacing
 
 @Composable
 fun VelocityMakeListItem(
@@ -42,10 +38,10 @@ fun VelocityMakeListItem(
         modifier = modifier
             .fillMaxWidth()
             .clickable { onItemClick(make) }
-            .padding(4.dp)
-            .shadow(8.dp, MaterialTheme.shapes.medium),
+            .padding(Spacing.unit)
+            .shadow(Spacing.unit2, MaterialTheme.shapes.medium),
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
-        colors = CardDefaults.cardColors(containerColor = VelocityCardBg),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
         shape = MaterialTheme.shapes.medium
     ) {
         Box(
@@ -56,13 +52,13 @@ fun VelocityMakeListItem(
                     .fillMaxWidth()
                     .aspectRatio(1f)
                     .clip(MaterialTheme.shapes.medium)
-                    .background(getMakeBackground(make.name)),
-                model = findLogo(make.name.lowercase()),
+                    .background(makeBackground(make.name)),
+                model = findMakeLogo(make.name.lowercase()),
                 contentDescription = "${make.name} logo",
                 loading = {
                     CircularProgressIndicator(
                         modifier = Modifier.padding(64.dp),
-                        color = VelocityPrimaryAccent
+                        color = MaterialTheme.colorScheme.primaryFixedDim
                     )
                 },
                 error = {
@@ -70,45 +66,40 @@ fun VelocityMakeListItem(
                         modifier = Modifier
                             .fillMaxWidth()
                             .aspectRatio(1f)
-                            .background(VelocityDarkBg)
-                            .padding(16.dp),
+                            .background(MaterialTheme.colorScheme.background)
+                            .padding(Spacing.unit4),
                         painter = painterResource(id = R.drawable.baseline_directions_car_filled_24),
                         contentDescription = "Fallback image",
                     )
                 }
             )
 
-            // Velocity accent bar at bottom
+            // Accent bar marks the boundary between the logo art and the make name label.
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .align(alignment = androidx.compose.ui.Alignment.BottomCenter)
-                    .height(4.dp)
-                    .background(VelocityPrimaryAccent)
+                    .align(alignment = Alignment.BottomCenter)
+                    .height(Spacing.unit)
+                    .background(MaterialTheme.colorScheme.primaryFixedDim)
             )
         }
 
-        // Make name label at bottom
-        androidx.compose.material3.Text(
+        Text(
             text = make.name.uppercase(),
             modifier = Modifier
-                .padding(start = 16.dp, end = 16.dp, bottom = 12.dp),
+                .padding(start = Spacing.unit4, end = Spacing.unit4, bottom = Spacing.unit2 + Spacing.unit),
             style = MaterialTheme.typography.titleMedium,
-            color = VelocityPrimaryAccent
+            color = MaterialTheme.colorScheme.primaryFixedDim
         )
     }
 }
 
-private fun getMakeBackground(make: String): Color {
+@Composable
+private fun makeBackground(make: String): Color {
     return when (make.lowercase()) {
-        "bmw" -> VelocityDarkBg
-        else -> VelocityCardBg
+        "bmw" -> MaterialTheme.colorScheme.background
+        else -> MaterialTheme.colorScheme.surfaceContainer
     }
-}
-
-// This function is referenced but not defined in the file - need to add it
-private fun findLogo(makeName: String): String {
-    return Constants.IMAGE_BASE_URL + Constants.IMAGE_PATH_THUMB + makeName.replace(" ", "-") + ".png?raw=true"
 }
 
 @Preview(showBackground = true)

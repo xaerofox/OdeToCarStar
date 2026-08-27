@@ -19,10 +19,10 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -31,7 +31,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.jtorr.odetocarstar.data.model.CarMake
-import com.jtorr.odetocarstar.presentation.makes.components.MakeListItem
+import com.jtorr.odetocarstar.presentation.makes.components.VelocityMakeListItem
 import com.jtorr.odetocarstar.presentation.util.LocalSharedTransitionContext
 import com.jtorr.odetocarstar.presentation.util.route.Screen
 import com.jtorr.odetocarstar.presentation.util.theme.OdeToCarStarTheme
@@ -41,6 +41,10 @@ fun VelocityMakeScreen(
     navController: NavController,
     viewModel: CarMakeViewModel = hiltViewModel()
 ) {
+    LaunchedEffect(Unit) {
+        viewModel.getMakes()
+    }
+
     VelocityMakeScreen(
         onMakeClick = { make ->
             navController.navigate(Screen.CarYearScreen.withArgs(make.name))
@@ -55,7 +59,8 @@ private fun VelocityMakeScreen(
     onMakeClick: (CarMake) -> Unit,
     state: MakeListState
 ) {
-    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
+    val scrollBehavior =
+        TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
     val transitionContext = LocalSharedTransitionContext.current
 
     Scaffold(
@@ -64,13 +69,12 @@ private fun VelocityMakeScreen(
                 title = {
                     Text(
                         text = "ODE TO CAR*",
-                        style = MaterialTheme.typography.headlineMedium, // Assuming this maps to a heavy style, or just ensuring it's uppercase as per requirement
-                        color = Color.White
+                        style = MaterialTheme.typography.headlineMedium
                     )
                 },
                 colors = topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = Color(0xFF00dbe9) // Primary Accent: Electric Blue
+                    titleContentColor = MaterialTheme.colorScheme.primaryFixedDim
                 ),
                 scrollBehavior = scrollBehavior
             )
@@ -82,58 +86,59 @@ private fun VelocityMakeScreen(
                 .padding(it)
                 .fillMaxSize()
         ) {
-            LazyVerticalGrid(columns = GridCells.Fixed(2)) {
-                items(state.makes) { make ->
-                    if (transitionContext != null) {
-                        with(transitionContext.sharedTransitionScope) {
-                            MakeListItem(
-                                modifier = Modifier
-                                    .sharedElement(
-                                        sharedContentState = rememberSharedContentState(key = "image-${make.name.lowercase()}"),
-                                        animatedVisibilityScope = transitionContext.animatedVisibilityScope,
-                                        boundsTransform = { _, _ ->
-                                            spring(
-                                                dampingRatio = 0.8f,
-                                                stiffness = 380f
-                                            )
-                                        }
-                                    ),
-                                make = make,
-                                onItemClick = onMakeClick,
-                            )
+            when (state) {
+                is MakeListState.Error -> {
+                    Text(
+                        text = state.message,
+                        color = MaterialTheme.colorScheme.secondaryContainer,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 20.dp)
+                            .align(Alignment.Center)
+                    )
+                }
+
+                MakeListState.Loading -> CircularProgressIndicator(
+                    modifier = Modifier.align(Alignment.Center),
+                    color = MaterialTheme.colorScheme.primaryFixedDim
+                )
+
+                is MakeListState.Success -> {
+                    LazyVerticalGrid(columns = GridCells.Fixed(2)) {
+                        items(state.makes) { make ->
+                            if (transitionContext != null) {
+                                with(transitionContext.sharedTransitionScope) {
+                                    VelocityMakeListItem(
+                                        modifier = Modifier
+                                            .sharedElement(
+                                                sharedContentState = rememberSharedContentState(key = "image-${make.name.lowercase()}"),
+                                                animatedVisibilityScope = transitionContext.animatedVisibilityScope,
+                                                boundsTransform = { _, _ ->
+                                                    spring(
+                                                        dampingRatio = 0.8f,
+                                                        stiffness = 380f
+                                                    )
+                                                }
+                                            ),
+                                        make = make,
+                                        onItemClick = onMakeClick,
+                                    )
+                                }
+                            }
                         }
                     }
                 }
             }
-
-            if (state.error.isNotBlank()) {
-                Text(
-                    text = state.error,
-                    color = Color(0xFFff525c), // Secondary Accent: Racing Red
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 20.dp)
-                        .align(Alignment.Center)
-                )
-            }
-
-            if (state.isLoading) {
-                CircularProgressIndicator(
-                    modifier = Modifier.align(Alignment.Center),
-                    color = Color(0xFF00dbe9) // Electric Blue for loading/progress
-                )
-            }
-
             Box(
                 modifier = Modifier
                     .align(alignment = Alignment.BottomEnd)
-                    .background(Color(0xFF131314)) // Midnight Carbon Base
+                    .background(MaterialTheme.colorScheme.background)
             ) {
                 Text(
                     modifier = Modifier.padding(2.dp),
-                    text = "*ONLY US VEHICLE INFORMATION BETWEEN 2015 - 2020", // Uppercase for labels/status, or standard if it's just a notice? Requirement says "Headings/Labels demanding attention must be UPPERCASE". This is technical copy but let's make it stand out.
-                    color = Color(0xffbbea00), // Tertiary Accent: Acid Green (or another appropriate accent)
+                    text = "*ONLY US VEHICLE INFORMATION BETWEEN 2015 - 2020",
+                    color = MaterialTheme.colorScheme.tertiaryContainer,
                     fontSize = 10.sp
                 )
             }
@@ -149,7 +154,7 @@ fun VelocityMakeScreenPreview() {
     OdeToCarStarTheme(darkTheme = true) {
         VelocityMakeScreen(
             onMakeClick = {},
-            state = MakeListState(
+            state = MakeListState.Success(
                 makes = listOf(
                     carMake,
                     carMake.copy(id = 1, name = "Honda"),
