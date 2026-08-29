@@ -1,17 +1,18 @@
 package com.jtorr.odetocarstar.presentation.util.route
 
-sealed class Screen(val route: String) {
-    data object CarMakeScreen: Screen("car_makes")
-    data object CarYearScreen: Screen("car_year")
-    data object CarModelScreen: Screen("car_models")
-    data object CarTrimScreen: Screen("car_trim")
+import androidx.navigation3.runtime.NavKey
+import kotlinx.serialization.Serializable
 
-    fun withArgs(vararg args: String): String {
-        return buildString {
-            append(route)
-            args.forEach { arg ->
-                append("/$arg")
-            }
-        }
-    }
+sealed interface Screen : NavKey {
+    @Serializable
+    data object CarMakeScreen : Screen
+
+    @Serializable
+    data class CarYearScreen(val makeId: String) : Screen
+
+    @Serializable
+    data class CarModelScreen(val make: String, val year: String) : Screen
+
+    @Serializable
+    data class CarTrimScreen(val modelName: String, val modelId: String, val year: String) : Screen
 }

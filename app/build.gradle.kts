@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.android.ksp)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.dagger.hilt)
+    alias(libs.plugins.jetbrains.kotlin.serialization)
 }
 
 android {
@@ -60,10 +61,12 @@ dependencies {
     implementation(libs.bundles.compose)
     implementation(platform(libs.compose.bom))
     implementation(libs.androidx.lifecycle.viewmodel.compose)
-    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.navigation3.runtime)
+    implementation(libs.androidx.navigation3.ui)
+    implementation(libs.androidx.lifecycle.viewmodel.navigation3)
+    implementation(libs.kotlinx.serialization.core)
     implementation(libs.androidx.junit.ktx)
     implementation(libs.androidx.material.icons.extended)
-    implementation(libs.navigation.compose)
 
     //Hilt
     ksp(libs.hilt.android.complier)

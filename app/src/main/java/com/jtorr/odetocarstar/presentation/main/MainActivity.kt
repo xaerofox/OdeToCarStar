@@ -3,21 +3,23 @@ package com.jtorr.odetocarstar.presentation.main
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.SharedTransitionLayout
-import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.togetherWith
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.navigation.NavController
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavType
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
-import androidx.navigation.navigation
+import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
+import androidx.navigation3.runtime.entryProvider
+import androidx.navigation3.runtime.metadata
+import androidx.navigation3.runtime.rememberNavBackStack
+import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
+import androidx.navigation3.ui.LocalNavAnimatedContentScope
+import androidx.navigation3.ui.NavDisplay
 import com.jtorr.odetocarstar.presentation.makes.VelocityMakeScreen
 import com.jtorr.odetocarstar.presentation.models.CarModelScreen
 import com.jtorr.odetocarstar.presentation.trims.CarTrimScreen
@@ -28,6 +30,22 @@ import com.jtorr.odetocarstar.presentation.util.theme.OdeToCarStarTheme
 import com.jtorr.odetocarstar.presentation.year.CarYearScreen
 import dagger.hilt.android.AndroidEntryPoint
 
+private val SLIDE_TRANSITION_METADATA = metadata {
+    put(NavDisplay.TransitionKey) {
+        slideInHorizontally(
+            initialOffsetX = { it },
+            animationSpec = tween(500)
+        ) togetherWith ExitTransition.KeepUntilTransitionsFinished
+    }
+    put(NavDisplay.PopTransitionKey) {
+        EnterTransition.None togetherWith
+            slideOutHorizontally(
+                targetOffsetX = { it },
+                animationSpec = tween(500)
+            )
+    }
+}
+
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,126 +53,85 @@ class MainActivity : ComponentActivity() {
         setContent {
             OdeToCarStarTheme {
                 Surface(color = MaterialTheme.colorScheme.background) {
-                    val navController = rememberNavController()
+                    val backStack = rememberNavBackStack(Screen.CarMakeScreen)
+
                     SharedTransitionLayout {
-                        NavHost(
-                            navController = navController,
-                            startDestination = Screen.CarMakeScreen.route
-                        ) {
-                            myNavGraph(navController,this@SharedTransitionLayout)
-                        }
+                        NavDisplay(
+                            backStack = backStack,
+                            onBack = { backStack.removeLastOrNull() },
+                            sharedTransitionScope = this,
+                            entryDecorators = listOf(
+                                rememberSaveableStateHolderNavEntryDecorator(),
+                                rememberViewModelStoreNavEntryDecorator()
+                            ),
+                            entryProvider = entryProvider {
+                                entry<Screen.CarMakeScreen> {
+                                    val context = SharedTransitionContext(
+                                        sharedTransitionScope = this@SharedTransitionLayout,
+                                        animatedVisibilityScope = LocalNavAnimatedContentScope.current
+                                    )
+
+                                    CompositionLocalProvider(LocalSharedTransitionContext provides context) {
+                                        VelocityMakeScreen(
+                                            onMakeClick = { make ->
+                                                backStack.add(Screen.CarYearScreen(makeId = make.name))
+                                            }
+                                        )
+                                    }
+                                }
+
+                                entry<Screen.CarYearScreen> { key ->
+                                    val context = SharedTransitionContext(
+                                        sharedTransitionScope = this@SharedTransitionLayout,
+                                        animatedVisibilityScope = LocalNavAnimatedContentScope.current
+                                    )
+
+                                    CompositionLocalProvider(LocalSharedTransitionContext provides context) {
+                                        CarYearScreen(
+                                            make = key.makeId,
+                                            onBackClick = { backStack.removeLastOrNull() },
+                                            onYearClick = { year ->
+                                                backStack.add(
+                                                    Screen.CarModelScreen(make = key.makeId, year = year)
+                                                )
+                                            }
+                                        )
+                                    }
+                                }
+
+                                entry<Screen.CarModelScreen>(
+                                    metadata = SLIDE_TRANSITION_METADATA
+                                ) { key ->
+                                    CarModelScreen(
+                                        make = key.make,
+                                        year = key.year,
+                                        onBackClick = { backStack.removeLastOrNull() },
+                                        onModelClick = { model ->
+                                            backStack.add(
+                                                Screen.CarTrimScreen(
+                                                    modelName = model.name,
+                                                    modelId = model.id.toString(),
+                                                    year = key.year
+                                                )
+                                            )
+                                        }
+                                    )
+                                }
+
+                                entry<Screen.CarTrimScreen>(
+                                    metadata = SLIDE_TRANSITION_METADATA
+                                ) { key ->
+                                    CarTrimScreen(
+                                        modelName = key.modelName,
+                                        year = key.year,
+                                        modelId = key.modelId,
+                                        onBackClick = { backStack.removeLastOrNull() }
+                                    )
+                                }
+                            }
+                        )
                     }
                 }
-            }
-        }
-    }
-
-    fun NavGraphBuilder.myNavGraph(navController: NavController, sharedTransitionScope: SharedTransitionScope) {
-        navigation(
-            startDestination = "CarMakeScreen", route = Screen.CarMakeScreen.route
-        ) {
-            composable(
-                "CarMakeScreen",
-            ) {
-                val context = SharedTransitionContext(
-                    sharedTransitionScope = sharedTransitionScope,
-                    animatedVisibilityScope = this
-                )
-
-                CompositionLocalProvider(LocalSharedTransitionContext provides context) {
-                    VelocityMakeScreen(navController)
-                }
-            }
-            
-            composable(
-                Screen.CarYearScreen.route + "/{makeId}",
-            ) { entry ->
-                val context = SharedTransitionContext(
-                    sharedTransitionScope = sharedTransitionScope,
-                    animatedVisibilityScope = this
-                )
-
-                CompositionLocalProvider(LocalSharedTransitionContext provides context) {
-                    CarYearScreen(
-                        make = entry.arguments?.getString("makeId")!!,
-                        navController = navController
-                    )
-                }
-            }
-
-            composable(
-                route = Screen.CarModelScreen.route + "/{make}/{year}",
-                enterTransition = {
-                    return@composable slideIntoContainer(
-                        AnimatedContentTransitionScope.SlideDirection.Start, tween(500)
-                    )
-                },
-                popExitTransition = {
-                    return@composable slideOutOfContainer(
-                        AnimatedContentTransitionScope.SlideDirection.End, tween(500)
-                    )
-                },
-                popEnterTransition = {
-                    return@composable slideIntoContainer(
-                        AnimatedContentTransitionScope.SlideDirection.End, tween(500)
-                    )
-                },
-                arguments = listOf(
-                    navArgument("make") {
-                        type = NavType.StringType
-                        defaultValue = ""
-                    },
-                    navArgument("year") {
-                        type = NavType.StringType
-                        defaultValue = "2020"
-                    }
-                )
-            ) {
-                CarModelScreen(
-                    navController = navController,
-                    make = it.arguments?.getString("make")!!,
-                    year = it.arguments?.getString("year")!!,
-                )
-            }
-
-            composable(
-                route = Screen.CarTrimScreen.route + "/{modelName}/{modelId}/{year}",
-                enterTransition = {
-                    return@composable slideIntoContainer(
-                        AnimatedContentTransitionScope.SlideDirection.Start, tween(500)
-                    )
-                },
-                popExitTransition = {
-                    return@composable slideOutOfContainer(
-                        AnimatedContentTransitionScope.SlideDirection.End, tween(500)
-                    )
-                },
-                popEnterTransition = {
-                    return@composable slideIntoContainer(
-                        AnimatedContentTransitionScope.SlideDirection.End, tween(500)
-                    )
-                },
-                arguments = listOf(
-                    navArgument("modelName") {
-                        type = NavType.StringType
-                        defaultValue = ""
-                    },
-                    navArgument("modelId") {
-                        type = NavType.StringType
-                        defaultValue = ""
-                    },
-                    navArgument("year") {
-                        type = NavType.StringType
-                        defaultValue = ""
-                    }
-                )
-            ) {
-                CarTrimScreen(
-                    navController = navController,
-                    modelName = it.arguments?.getString("modelName")!!,
-                    year = it.arguments?.getString("year")!!,
-                    modelId = it.arguments?.getString("modelId")!!
-                )
             }
         }
     }

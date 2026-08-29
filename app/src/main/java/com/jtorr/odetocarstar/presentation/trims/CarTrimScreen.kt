@@ -31,18 +31,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.jtorr.odetocarstar.presentation.trims.components.TrimDetailBottomSheet
 import com.jtorr.odetocarstar.presentation.trims.components.TrimListItem
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CarTrimScreen(
-    navController: NavController? = null,
-    viewModel: CarTrimViewModel = hiltViewModel(),
     modelName: String,
     year: String,
-    modelId: String
+    modelId: String,
+    onBackClick: () -> Unit = {},
+    viewModel: CarTrimViewModel = hiltViewModel(),
 ) {
     val rememberedYear by remember { mutableIntStateOf(year.toInt()) }
     val rememberedModelId by remember { mutableIntStateOf(modelId.toInt()) }
@@ -72,7 +71,7 @@ fun CarTrimScreen(
                     titleContentColor = MaterialTheme.colorScheme.primary
                 ),
                 navigationIcon = {
-                    IconButton(onClick = { navController?.popBackStack() }) {
+                    IconButton(onClick = onBackClick) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null)
                     }
                 }

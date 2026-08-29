@@ -28,18 +28,17 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import coil.compose.SubcomposeAsyncImage
 import com.jtorr.odetocarstar.presentation.makes.components.customBackgroundSetup
 import com.jtorr.odetocarstar.presentation.makes.components.findMakeLogo
 import com.jtorr.odetocarstar.presentation.util.LocalSharedTransitionContext
-import com.jtorr.odetocarstar.presentation.util.route.Screen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CarYearScreen(
-    navController: NavController? = null,
     make: String,
+    onBackClick: () -> Unit = {},
+    onYearClick: (String) -> Unit = {},
 ) {
     val transitionContext = LocalSharedTransitionContext.current
 
@@ -54,7 +53,7 @@ fun CarYearScreen(
                     titleContentColor = MaterialTheme.colorScheme.primary
                 ),
                 navigationIcon = {
-                    IconButton(onClick = { navController?.popBackStack() }) {
+                    IconButton(onClick = onBackClick) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null)
                     }
                 }
@@ -106,7 +105,7 @@ fun CarYearScreen(
                 items(years.size) {
                     OutlinedButton(
                         modifier = Modifier.padding(4.dp),
-                        onClick = { navController?.navigate(Screen.CarModelScreen.withArgs(make, years[it])) }
+                        onClick = { onYearClick(years[it]) }
                     ) {
                         Text(text = years[it])
                     }

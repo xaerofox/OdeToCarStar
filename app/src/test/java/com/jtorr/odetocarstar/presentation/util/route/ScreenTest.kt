@@ -1,100 +1,52 @@
 package com.jtorr.odetocarstar.presentation.util.route
 
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotEquals
+import org.junit.Assert.assertSame
 import org.junit.Test
 
 class ScreenTest {
 
     @Test
-    fun `CarMakeScreen has correct route`() {
-        assertEquals("car_makes", Screen.CarMakeScreen.route)
+    fun `CarYearScreen carries the selected make`() {
+        val screen = Screen.CarYearScreen(makeId = "Ford")
+
+        assertEquals("Ford", screen.makeId)
     }
 
     @Test
-    fun `CarYearScreen has correct route`() {
-        assertEquals("car_year", Screen.CarYearScreen.route)
+    fun `CarModelScreen carries make and year`() {
+        val screen = Screen.CarModelScreen(make = "Ford", year = "2020")
+
+        assertEquals("Ford", screen.make)
+        assertEquals("2020", screen.year)
     }
 
     @Test
-    fun `CarModelScreen has correct route`() {
-        assertEquals("car_models", Screen.CarModelScreen.route)
+    fun `CarTrimScreen carries model name, id and year`() {
+        val screen = Screen.CarTrimScreen(modelName = "F-150", modelId = "1", year = "2020")
+
+        assertEquals("F-150", screen.modelName)
+        assertEquals("1", screen.modelId)
+        assertEquals("2020", screen.year)
     }
 
     @Test
-    fun `CarTrimScreen has correct route`() {
-        assertEquals("car_trim", Screen.CarTrimScreen.route)
-    }
-
-    @Test
-    fun `withArgs returns route when no args provided`() {
-        // Given
-        val screen = Screen.CarMakeScreen
-
-        // When
-        val result = screen.withArgs()
-
-        // Then
-        assertEquals("car_makes", result)
-    }
-
-    @Test
-    fun `withArgs appends single arg`() {
-        // Given
-        val screen = Screen.CarMakeScreen
-
-        // When
-        val result = screen.withArgs("1")
-
-        // Then
-        assertEquals("car_makes/1", result)
-    }
-
-    @Test
-    fun `withArgs appends multiple args`() {
-        // Given
-        val screen = Screen.CarModelScreen
-
-        // When
-        val result = screen.withArgs("2024", "Ford")
-
-        // Then
-        assertEquals("car_models/2024/Ford", result)
-    }
-
-    @Test
-    fun `withArgs appends many args`() {
-        // Given
-        val screen = Screen.CarTrimScreen
-
-        // When
-        val result = screen.withArgs("1", "2024", "Ford", "F-150")
-
-        // Then
-        assertEquals("car_trim/1/2024/Ford/F-150", result)
-    }
-
-    @Test
-    fun `withArgs does not add trailing slash`() {
-        // Given
-        val screen = Screen.CarYearScreen
-
-        // When
-        val result = screen.withArgs("2024")
-
-        // Then
-        assertEquals("car_year/2024", result)
-        assertEquals(false, result.endsWith("/"))
-    }
-
-    @Test
-    fun `all screens have unique routes`() {
-        val routes = setOf(
-            Screen.CarMakeScreen.route,
-            Screen.CarYearScreen.route,
-            Screen.CarModelScreen.route,
-            Screen.CarTrimScreen.route
+    fun `screens with the same arguments are equal`() {
+        assertEquals(Screen.CarYearScreen(makeId = "Ford"), Screen.CarYearScreen(makeId = "Ford"))
+        assertEquals(
+            Screen.CarModelScreen(make = "Ford", year = "2020"),
+            Screen.CarModelScreen(make = "Ford", year = "2020")
         )
+    }
 
-        assertEquals(4, routes.size)
+    @Test
+    fun `screens with different arguments are not equal`() {
+        assertNotEquals(Screen.CarYearScreen(makeId = "Ford"), Screen.CarYearScreen(makeId = "Honda"))
+    }
+
+    @Test
+    fun `CarMakeScreen is a singleton object`() {
+        assertSame(Screen.CarMakeScreen, Screen.CarMakeScreen)
     }
 }

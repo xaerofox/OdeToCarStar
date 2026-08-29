@@ -30,20 +30,19 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.jtorr.odetocarstar.data.model.CarModel
 import com.jtorr.odetocarstar.presentation.models.components.ModelListItem
-import com.jtorr.odetocarstar.presentation.util.route.Screen
 import com.jtorr.odetocarstar.presentation.util.theme.OdeToCarStarTheme
 import androidx.compose.runtime.collectAsState
 
 
 @Composable
 fun CarModelScreen(
-    navController: NavController,
-    viewModel: CarModelViewModel = hiltViewModel(),
     make: String,
     year: String,
+    onBackClick: () -> Unit,
+    onModelClick: (CarModel) -> Unit,
+    viewModel: CarModelViewModel = hiltViewModel(),
 ) {
     val rememberYear by remember { mutableIntStateOf(year.toInt()) }
     val rememberMake by remember { mutableStateOf(make) }
@@ -53,16 +52,8 @@ fun CarModelScreen(
     }
 
     CarModelScreen(
-        onBackClick = { navController.popBackStack() },
-        onModelClick = { model ->
-            navController.navigate(
-                Screen.CarTrimScreen.withArgs(
-                    model.name,
-                    model.id.toString(),
-                    year
-                )
-            )
-        },
+        onBackClick = onBackClick,
+        onModelClick = onModelClick,
         state = viewModel.state.collectAsState().value,
         make = rememberMake,
         year = rememberYear

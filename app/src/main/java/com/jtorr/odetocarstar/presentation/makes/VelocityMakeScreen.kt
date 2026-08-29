@@ -29,16 +29,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.jtorr.odetocarstar.data.model.CarMake
 import com.jtorr.odetocarstar.presentation.makes.components.VelocityMakeListItem
 import com.jtorr.odetocarstar.presentation.util.LocalSharedTransitionContext
-import com.jtorr.odetocarstar.presentation.util.route.Screen
 import com.jtorr.odetocarstar.presentation.util.theme.OdeToCarStarTheme
 
 @Composable
 fun VelocityMakeScreen(
-    navController: NavController,
+    onMakeClick: (CarMake) -> Unit,
     viewModel: CarMakeViewModel = hiltViewModel()
 ) {
     LaunchedEffect(Unit) {
@@ -46,9 +44,7 @@ fun VelocityMakeScreen(
     }
 
     VelocityMakeScreen(
-        onMakeClick = { make ->
-            navController.navigate(Screen.CarYearScreen.withArgs(make.name))
-        },
+        onMakeClick = onMakeClick,
         state = viewModel.state.collectAsState().value
     )
 }
