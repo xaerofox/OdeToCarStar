@@ -4,9 +4,10 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
@@ -30,21 +31,40 @@ import com.jtorr.odetocarstar.presentation.util.theme.OdeToCarStarTheme
 import com.jtorr.odetocarstar.presentation.year.CarYearScreen
 import dagger.hilt.android.AndroidEntryPoint
 
-private val SLIDE_TRANSITION_METADATA = metadata {
+/**
+ * Builds push/pop transition metadata for a slide-in entry.
+ *
+ * Push: the entry itself slides in from the right while the entry it covers fades out
+ * (matching the navigation-compose default for an unset `exitTransition`).
+ * Pop: the entry itself slides back out to the right while the entry it reveals plays
+ * [popRevealEnter] (that revealed entry's own "no custom transition" behavior).
+ */
+private fun slideTransitionMetadata(popRevealEnter: EnterTransition) = metadata {
     put(NavDisplay.TransitionKey) {
         slideInHorizontally(
             initialOffsetX = { it },
             animationSpec = tween(500)
-        ) togetherWith ExitTransition.KeepUntilTransitionsFinished
+        ) togetherWith fadeOut(animationSpec = tween(700))
     }
     put(NavDisplay.PopTransitionKey) {
-        EnterTransition.None togetherWith
+        popRevealEnter togetherWith
             slideOutHorizontally(
                 targetOffsetX = { it },
                 animationSpec = tween(500)
             )
     }
 }
+
+// CarModelScreen's pop reveals CarYearScreen, which has no custom transition (default fade in).
+private val CAR_MODEL_TRANSITION_METADATA = slideTransitionMetadata(
+    popRevealEnter = fadeIn(animationSpec = tween(700))
+)
+
+// CarTrimScreen's pop reveals CarModelScreen, which slides in from the right on push, so its
+// pop-reveal parallaxes in from the left.
+private val CAR_TRIM_TRANSITION_METADATA = slideTransitionMetadata(
+    popRevealEnter = slideInHorizontally(initialOffsetX = { -it }, animationSpec = tween(500))
+)
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -100,7 +120,7 @@ class MainActivity : ComponentActivity() {
                                 }
 
                                 entry<Screen.CarModelScreen>(
-                                    metadata = SLIDE_TRANSITION_METADATA
+                                    metadata = CAR_MODEL_TRANSITION_METADATA
                                 ) { key ->
                                     CarModelScreen(
                                         make = key.make,
@@ -119,7 +139,7 @@ class MainActivity : ComponentActivity() {
                                 }
 
                                 entry<Screen.CarTrimScreen>(
-                                    metadata = SLIDE_TRANSITION_METADATA
+                                    metadata = CAR_TRIM_TRANSITION_METADATA
                                 ) { key ->
                                     CarTrimScreen(
                                         modelName = key.modelName,
