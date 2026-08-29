@@ -24,6 +24,7 @@ moshi-kotlin = "1.15.2"
 nav3-core = "1.1.4"
 lifecycle-viewmodel-nav3 = "2.10.0"
 kotlinx-serialization-core = "1.9.0"
+kotlinx-serialization-json = "1.9.0"
 retro = "3.0.0"
 robolectric = "4.16.1"
 room = "2.8.4"
@@ -53,6 +54,7 @@ androidx-navigation3-runtime = { module = "androidx.navigation3:navigation3-runt
 androidx-navigation3-ui = { module = "androidx.navigation3:navigation3-ui", version.ref = "nav3-core" }
 androidx-lifecycle-viewmodel-navigation3 = { module = "androidx.lifecycle:lifecycle-viewmodel-navigation3", version.ref = "lifecycle-viewmodel-nav3" }
 kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlinx-serialization-core" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
 androidx-runner = { module = "androidx.test:runner", version.ref = "runner" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil-compose" }
 coil-test = { module = "io.coil-kt:coil-test", version.ref = "coil-compose" }

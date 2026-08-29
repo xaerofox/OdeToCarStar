@@ -94,6 +94,7 @@ dependencies {
 
     testImplementation(libs.androidx.core)
     testImplementation(libs.junit)
+    testImplementation(libs.kotlinx.serialization.json)
     testImplementation(libs.androidx.core.testing)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.truth)
